@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Development service with full dev tools
+  cofferl-dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - /app/.venv  # Exclude venv from volume mount
+    ports:
+      - "7860:7860"  # Gradio
+      - "8888:8888"  # Jupyter (if needed)
+    environment:
+      - PYTHONPATH=/app/src
+    command: uv run python config/platform_config.py
+    profiles:
+      - dev
+
+  # Production service
+  cofferl-prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - "7860:7860"
+    environment:
+      - PYTHONPATH=/app/src
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  # GPU-enabled service (requires nvidia-docker)
+  cofferl-gpu:
+    build:
+      context: .
+      target: production
+    ports:
+      - "7860:7860"
+    environment:
+      - PYTHONPATH=/app/src
+      - CUDA_VISIBLE_DEVICES=0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    profiles:
+      - gpu
