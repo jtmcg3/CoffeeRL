@@ -6,7 +6,7 @@ A lightweight reinforcement learning framework for coffee optimization using tra
 
 <img src="docs/static/gradio_interface.png" alt="Gradio Interface" width="600"/>
 
-*Preview of the Gradio web interface for fine-tuning coffee parameters. Yes, It's truly terrible*
+*Preview of the Gradio web interface for fine-tuning coffee parameters. Yes, It's truly terrible, 0.5B Qwen2 base fine-tuned on fully synthetic data generated using openai api*
 
 
 ## Project Structure
