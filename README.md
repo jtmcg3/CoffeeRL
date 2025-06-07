@@ -2,6 +2,13 @@
 
 A lightweight reinforcement learning framework for coffee optimization using transformer models and PEFT (Parameter-Efficient Fine-Tuning). Currently only fine tuning is implemented - RL is TODO
 
+## Interface Preview
+
+<img src="docs/static/gradio_interface.png" alt="Gradio Interface" width="600"/>
+
+*Preview of the Gradio web interface for fine-tuning coffee parameters. Yes, It's truly terrible*
+
+
 ## Project Structure
 
 ```
@@ -156,4 +163,4 @@ model = AutoModelForCausalLM.from_pretrained(
 
 ## License
 
-[Add your license information here]
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) document for details.
