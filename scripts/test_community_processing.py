@@ -12,7 +12,7 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from community_collection import CommunityDataProcessor
+from community_collection import CommunityDataProcessor  # noqa: E402
 
 
 def main():
@@ -43,12 +43,12 @@ def main():
             print(f"Reasoning: {example['output']['reasoning'][:100]}...")
 
         # Validate examples
-        print(f"\n🔍 Validating examples...")
+        print("\n🔍 Validating examples...")
         valid_examples = processor.validate_and_filter(examples)
         print(f"✅ Validation complete: {len(valid_examples)} valid examples")
 
         # Save processed examples
-        print(f"\n💾 Saving processed examples...")
+        print("\n💾 Saving processed examples...")
         output_file = processor.save_examples(
             valid_examples, "test_processed_examples.json"
         )
@@ -68,7 +68,7 @@ def main():
 
 def test_individual_methods(processor):
     """Test individual processing methods."""
-    print(f"\n🔧 Testing individual processing methods...")
+    print("\n🔧 Testing individual processing methods...")
 
     # Test extraction determination
     test_cases = [

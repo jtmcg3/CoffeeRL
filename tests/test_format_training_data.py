@@ -12,12 +12,13 @@ from pathlib import Path
 from typing import Any, Dict, List
 from unittest.mock import MagicMock, patch
 
+import pytest
+from datasets import Dataset
+
 # Add scripts directory to path before importing local modules
 sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 
-import pytest
-from datasets import Dataset
-from format_training_data import (
+from format_training_data import (  # noqa: E402
     create_qwen2_dataset,
     format_example_for_qwen2,
     format_training_data_for_qwen2,

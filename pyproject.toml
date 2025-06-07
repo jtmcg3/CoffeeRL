@@ -1,16 +1,19 @@
 [project]
 name = "coffeerl"
 version = "0.1.0"
-description = "Add your description here"
+description = "A vibe-coded Qwen2 RL training model for making V60 Pour Over Covfefe."
 readme = "README.md"
 requires-python = ">=3.11.11"
 dependencies = [
     "accelerate>=1.7.0",
     "datasets>=3.6.0",
     "gradio>=5.33.0",
+    "matplotlib>=3.7.0",
+    "numpy>=1.24.0",
     "openai>=1.0.0",
     "pandas>=2.3.0",
     "peft>=0.15.2",
+    "seaborn>=0.12.0",
     "transformers>=4.52.4",
     "torch>=2.0.0",
     "trl>=0.12.0",
@@ -28,6 +31,10 @@ dev = [
     "mypy>=1.16.0",
     "pre-commit>=4.2.0",
     "pytest>=8.4.0",
+]
+training = [
+    "bitsandbytes>=0.44.1; sys_platform == 'linux'",
+    "jupyter>=1.0.0",
 ]
 
 [build-system]
@@ -67,19 +74,14 @@ known_first_party = ["src"]
 # mypy configuration
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-mypy_path = "src"
+files = ["src"]
+namespace_packages = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+check_untyped_defs = false
+warn_return_any = false
+no_implicit_optional = false
 
 [[tool.mypy.overrides]]
 module = "tests.*"

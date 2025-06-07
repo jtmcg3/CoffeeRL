@@ -6,10 +6,9 @@ from the coffee community through web forms and standardized data processing.
 """
 
 import json
-import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 

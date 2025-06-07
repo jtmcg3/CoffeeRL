@@ -15,10 +15,8 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from community_collection import (
+from community_collection import (  # noqa: E402
     CommunityDataProcessor,
-    create_outreach_templates,
-    generate_web_form_html,
     save_outreach_templates,
     save_web_form,
 )

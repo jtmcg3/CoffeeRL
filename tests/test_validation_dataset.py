@@ -7,19 +7,16 @@ including data loading, categorization, balancing, and saving.
 """
 
 import json
-
-# Import the functions we want to test
 import sys
-import tempfile
 from pathlib import Path
-from unittest.mock import mock_open, patch
 
-import pandas as pd
 import pytest
 from datasets import Dataset
 
+# Add scripts directory to path before importing local modules
 sys.path.append(str(Path(__file__).parent.parent / "scripts"))
-from create_validation_dataset import (
+
+from create_validation_dataset import (  # noqa: E402
     analyze_dataset_balance,
     categorize_by_extraction,
     create_balanced_validation_set,

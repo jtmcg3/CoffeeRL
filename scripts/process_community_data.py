@@ -4,6 +4,7 @@ Complete workflow for processing community contribution data.
 Run this script after collecting CSV responses from Google Forms or web form.
 """
 
+import json
 import os
 import sys
 from pathlib import Path
@@ -11,9 +12,7 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-import json
-
-from community_collection import CommunityDataProcessor
+from community_collection import CommunityDataProcessor  # noqa: E402
 
 
 def main():
@@ -62,10 +61,10 @@ def main():
             print("\n🔍 Sample processed example:")
             print(json.dumps(valid_examples[0], indent=2))
 
-        print(f"\n🎯 Next steps:")
+        print("\n🎯 Next steps:")
         print(f"  1. Review the output file: {output_file}")
-        print(f"  2. Merge with existing data if needed")
-        print(f"  3. Continue collecting until you reach 200 examples!")
+        print("  2. Merge with existing data if needed")
+        print("  3. Continue collecting until you reach 200 examples!")
 
     except Exception as e:
         print(f"❌ Error processing data: {e}")

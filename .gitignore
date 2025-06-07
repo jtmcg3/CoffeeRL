@@ -208,6 +208,7 @@ cython_debug/
 *.pth
 *.pt
 *.safetensors
+merges.txt
 wandb/
 mlruns/
 .neptune/
