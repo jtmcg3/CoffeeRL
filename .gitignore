@@ -229,6 +229,7 @@ outputs/
 runs/
 logs/
 tensorboard_logs/
+experiments/
 
 # Hugging Face cache
 .cache/
