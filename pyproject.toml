@@ -3,6 +3,7 @@ name = "coffeerl"
 version = "0.1.0"
 description = "A vibe-coded Qwen2 RL training model for making V60 Pour Over Covfefe."
 readme = "README.md"
+license = {text = "Apache-2.0"}
 requires-python = ">=3.11.11"
 dependencies = [
     "accelerate>=1.7.0",
