@@ -188,7 +188,7 @@ run_training() {
     # Build training arguments
     case $TRAINING_MODE in
         "dev")
-            training_args="--dev-mode --max-samples 100"
+            training_args="--dev-mode --max-train-samples 100"
             ;;
         "full")
             training_args=""
