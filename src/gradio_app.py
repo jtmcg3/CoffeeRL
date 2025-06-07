@@ -34,7 +34,8 @@ def load_model():
     # For now, we'll use the trained QLora model
     # In a production setup, you'd have merged models for different sizes
     model_path = os.environ.get(
-        "MODEL_PATH", str(project_root / "models" / "coffee-qwen2-qlora")
+        "MODEL_PATH",
+        str(project_root / "experiments" / "full-20250606-235528" / "model"),
     )
     model_size = "QLora"
 
@@ -287,11 +288,18 @@ def main():
     print(f"Platform: {platform_info['platform']}")
     print(f"Device: {platform_info['device']} ({platform_info['device_name']})")
 
+    # Check for environment variable override for port
+    server_port = int(
+        os.environ.get("GRADIO_SERVER_PORT", settings.get("server_port", 7860))
+    )
+
+    print(f"Starting server on port: {server_port}")
+
     # Apply platform-specific launch settings
     interface.launch(
         share=settings.get("share", False),
         server_name=settings.get("server_name", "127.0.0.1"),
-        server_port=settings.get("server_port", 7860),
+        server_port=server_port,
         debug=settings.get("debug", False),
     )
 
