@@ -5,7 +5,7 @@
 
 ## Executive Summary
 
-CoffeeRL-Lite is a focused, practical implementation of a coffee brewing AI assistant, designed to be built by a single developer on an ultra-low budget (<$200). Using Phi-2 (2.7B) with QLoRA fine-tuning, the project focuses exclusively on V60 pour-over optimization with 1,000 high-quality training examples.
+CoffeeRL-Lite is a focused, practical implementation of a coffee brewing AI assistant, designed to be built by a single developer on an ultra-low budget (<$150). Using Qwen2-0.5B (for local development) with QLoRA fine-tuning, the project focuses exclusively on V60 pour-over optimization with 1,000 high-quality training examples.
 
 ---
 
@@ -19,7 +19,7 @@ Create a minimal viable coffee model that can:
 - Demonstrate feasibility for future expansion
 
 ### 1.2 Key Constraints
-- **Budget**: <$200 total
+- **Budget**: <$150 total (local development)
 - **Timeline**: 6 weeks part-time
 - **Scope**: V60 pour-over only
 - **Developer**: Single person, 20 hours/week
@@ -29,22 +29,22 @@ Create a minimal viable coffee model that can:
 ## 2. Technical Architecture (Simplified)
 
 ### 2.1 Model Foundation
-- **Base Model**: Microsoft Phi-2 (2.7B) or Google Gemma-2B
-- **Why**: Excellent reasoning capability at minimal size
+- **Base Model**: Qwen2-0.5B (for local development) / Qwen2-1.5B (for production)
+- **Why**: Excellent reasoning capability, multilingual support, optimized for efficiency
 - **Training**: QLoRA (4-bit quantization)
-- **Hardware**: Google Colab Pro (T4 GPU)
+- **Hardware**: Local development (CPU/MPS) + Google Colab Pro (T4 GPU) for larger models
 
 ### 2.2 Simplified Training Pipeline
 
 ```mermaid
 graph LR
-    A[Phi-2 Base] --> B[QLoRA Fine-tuning]
+    A[Qwen2-0.5B Base] --> B[QLoRA Fine-tuning]
     B --> C[Simple Validation]
     C --> D[Deploy as API]
 
     B --> B1[1,000 Examples]
     B --> B2[3 Epochs]
-    B --> B3[~3 Hours Training]
+    B --> B3[~1-3 Hours Training]
 ```
 
 ### 2.3 Core Components (Minimal)
@@ -136,14 +136,15 @@ def generate_coffee_qa(n_examples=600):
 ### 4.1 Development Environment
 ```yaml
 compute:
-  platform: "Google Colab Pro"
-  cost: "$12/month"
-  gpu: "T4 (16GB)"
+  local: "CPU/MPS for Qwen2-0.5B development"
+  cloud: "Google Colab Pro for larger models"
+  cost: "$12/month (optional for larger models)"
+  gpu: "T4 (16GB) or local MPS/CUDA"
 
 training:
   library: "peft + transformers"
-  method: "QLoRA 4-bit"
-  time: "~3 hours total"
+  method: "QLoRA 4-bit (cloud) / Full precision (local)"
+  time: "~1-3 hours total"
 
 deployment:
   option1: "Hugging Face Spaces (free)"
@@ -154,37 +155,38 @@ deployment:
 ### 4.2 Complete Tech Stack
 ```python
 # requirements.txt (minimal)
-transformers==4.36.0
-peft==0.7.0
-bitsandbytes==0.41.0
-datasets==2.14.0
-accelerate==0.25.0
-gradio==4.8.0
-pandas==2.0.0
+transformers>=4.40.0
+peft>=0.10.0
+bitsandbytes>=0.43.0
+datasets>=2.14.0
+accelerate>=0.28.0
+gradio>=4.8.0
+pandas>=2.0.0
+torch>=2.0.0
 ```
 
 ### 4.3 Training Configuration
 ```python
-# QLoRA configuration for Colab Pro
+# QLoRA configuration for Qwen2
 config = LoraConfig(
     r=16,  # Low rank
     lora_alpha=32,
-    target_modules=["q_proj", "v_proj"],
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
     lora_dropout=0.1,
     bias="none",
     task_type="CAUSAL_LM"
 )
 
-# Training args optimized for T4
+# Training args optimized for local development and T4
 training_args = TrainingArguments(
-    per_device_train_batch_size=4,
-    gradient_accumulation_steps=4,
+    per_device_train_batch_size=8,  # Higher for 0.5B model
+    gradient_accumulation_steps=2,
     num_train_epochs=3,
     learning_rate=2e-4,
-    fp16=True,
+    fp16=True,  # Use bf16 for better stability with Qwen2
     save_strategy="epoch",
     logging_steps=10,
-    output_dir="./coffee-phi2-qlora"
+    output_dir="./coffee-qwen2-qlora"
 )
 ```
 
@@ -306,12 +308,12 @@ artifacts:
 ### 8.1 Detailed Costs
 | Item | Cost | Notes |
 |------|------|-------|
-| Colab Pro | $36 | 3 months @ $12/month |
+| Colab Pro (optional) | $12 | 1 month for larger models |
 | Data Generation | $20 | GPT-3.5 API |
 | TDS Meter | $30 | Used/basic model |
 | Coffee Beans | $50 | Testing varieties |
 | Domain (optional) | $12 | One year |
-| **Total** | **$148** | Under $150 |
+| **Total** | **$124** | Under $125 (local development) |
 
 ### 8.2 Optional Upgrades
 - Better TDS meter: +$100
@@ -383,11 +385,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from trl import SFTTrainer
 
-# Load model in 4-bit
+# Load model in 4-bit (or full precision for local 0.5B)
 model = AutoModelForCausalLM.from_pretrained(
-    "microsoft/phi-2",
-    load_in_4bit=True,
-    device_map="auto"
+    "Qwen/Qwen2-0.5B-Instruct",  # or Qwen2-1.5B-Instruct for production
+    load_in_4bit=True,  # Set to False for local development
+    device_map="auto",
+    trust_remote_code=True
 )
 
 # Prepare for QLoRA

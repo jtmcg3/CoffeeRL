@@ -1,0 +1,26 @@
+# 🔬 Help Build a Better Coffee Brewing Assistant! [Research Project]
+
+Hi r/coffee! I'm working on an AI-powered V60 brewing assistant and need your expertise to make it better.
+
+## What I'm Building
+A system that can recommend grind adjustments based on your brewing parameters and taste results. Think of it as having an experienced barista help you dial in your V60.
+
+## How You Can Help
+I'm collecting real brewing experiences from the community. If you've brewed a V60 recently and can remember the details, I'd love to hear about it!
+
+**What I need:**
+- Coffee amount (g)
+- Water amount (g) 
+- Grind size
+- Total brew time
+- How it tasted
+- What you'd adjust next time
+
+## Why This Matters
+Most brewing guides are generic. This project aims to create personalized recommendations based on real experiences from coffee lovers like you.
+
+**Contribute here:** [Form Link]
+
+Thanks for helping make better coffee for everyone! ☕
+
+*This is for a research project on coffee brewing optimization. All data will be anonymized and used solely for improving brewing recommendations.*

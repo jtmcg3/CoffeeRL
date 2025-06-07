@@ -1,0 +1,30 @@
+Subject: Research Collaboration - V60 Brewing Data Collection
+
+Dear [Coffee Shop Name] Team,
+
+I hope this email finds you well. I'm reaching out regarding a research project on V60 brewing optimization that I believe would interest your team.
+
+## Project Overview
+I'm developing an AI-powered brewing assistant that provides personalized grind adjustment recommendations based on brewing parameters and taste outcomes. The goal is to help coffee enthusiasts achieve better extractions more consistently.
+
+## How You Can Help
+I'm seeking experienced baristas and coffee professionals to contribute brewing data. This involves sharing details from V60 brews including:
+- Brewing parameters (coffee/water ratio, grind size, time)
+- Taste assessment
+- Recommended adjustments
+
+## What's In It For You
+- Early access to the brewing assistant tool
+- Recognition as a contributing partner
+- Insights from the aggregated brewing data
+- Potential collaboration opportunities
+
+The data collection process is simple and takes just a few minutes per contribution. All data is anonymized and used solely for improving brewing recommendations.
+
+Would you be interested in participating? I'd be happy to discuss this further and answer any questions.
+
+Best regards,
+[Your Name]
+[Contact Information]
+
+Contribution form: [Form Link]
