@@ -1,6 +1,6 @@
 # CoffeeRL-Lite
 
-A lightweight reinforcement learning framework for coffee optimization using transformer models and PEFT (Parameter-Efficient Fine-Tuning).
+A lightweight reinforcement learning framework for coffee optimization using transformer models and PEFT (Parameter-Efficient Fine-Tuning). Currently only fine tuning is implemented - RL is TODO
 
 ## Project Structure
 
