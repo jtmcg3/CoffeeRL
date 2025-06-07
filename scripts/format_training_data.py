@@ -20,7 +20,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def load_training_data(data_dir: Path = Path("data/processed")) -> Tuple[List[Dict], List[Dict]]:
+def load_training_data(
+    data_dir: Path = Path("data/processed"),
+) -> Tuple[List[Dict], List[Dict]]:
     """Load training and validation examples from JSON files."""
     training_file = data_dir / "training_examples.json"
     validation_file = data_dir / "validation_examples.json"
@@ -73,10 +75,16 @@ def create_qwen2_dataset(examples: List[Dict[str, Any]]) -> Dataset:
     return dataset
 
 
-def validate_token_lengths(dataset: Dataset, model_size: str = "0.5B") -> Dict[str, Any]:
+def validate_token_lengths(
+    dataset: Dataset, model_size: str = "0.5B"
+) -> Dict[str, Any]:
     """Validate token lengths using Qwen2 tokenizer."""
     # Use appropriate model name for tokenizer
-    model_name = f"Qwen/Qwen2-{model_size}" if model_size in ["0.5B", "1.5B"] else "Qwen/Qwen2-0.5B"
+    model_name = (
+        f"Qwen/Qwen2-{model_size}"
+        if model_size in ["0.5B", "1.5B"]
+        else "Qwen/Qwen2-0.5B"
+    )
 
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -111,7 +119,9 @@ def validate_token_lengths(dataset: Dataset, model_size: str = "0.5B") -> Dict[s
     return stats
 
 
-def save_formatted_dataset(dataset: Dataset, output_dir: Path, dataset_type: str, model_size: str) -> None:
+def save_formatted_dataset(
+    dataset: Dataset, output_dir: Path, dataset_type: str, model_size: str
+) -> None:
     """Save formatted dataset to disk."""
     output_path = output_dir / f"coffee_{dataset_type}_qwen2_{model_size}"
     output_path.mkdir(parents=True, exist_ok=True)
@@ -184,7 +194,9 @@ def format_training_data_for_qwen2(
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Format training data for Qwen2 fine-tuning")
+    parser = argparse.ArgumentParser(
+        description="Format training data for Qwen2 fine-tuning"
+    )
     parser.add_argument(
         "--model-size",
         choices=["0.5B", "1.5B"],

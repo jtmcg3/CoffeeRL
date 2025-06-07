@@ -2,22 +2,19 @@
 
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch
-
-import pytest
-import torch
+from unittest.mock import patch
 
 # Add src to path for imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from config.platform_config import (
+from config.platform_config import (  # noqa: E402
     get_device_map,
     get_gradient_accumulation_steps,
     get_optimal_qwen_model,
     get_training_batch_size,
     is_cloud_environment,
 )
-from qlora_config import (
+from qlora_config import (  # noqa: E402
     setup_qlora_config,
     setup_training_arguments,
 )
@@ -26,7 +23,7 @@ from qlora_config import (
 class TestPlatformConfig:
     """Test platform configuration functions."""
 
-    def test_get_optimal_qwen_model_local(self):
+    def test_get_optimal_qwen_model_local(self) -> None:
         """Test model selection for local environment."""
         with patch("config.platform_config.is_cloud_environment", return_value=False):
             model = get_optimal_qwen_model()
@@ -155,8 +152,6 @@ class TestQLoRAConfig:
 
             assert args.fp16 is False
             assert args.bf16 is True
-
-
 
 
 class TestCloudDetection:

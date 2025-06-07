@@ -17,7 +17,6 @@ sys.path.append(str(Path(__file__).parent.parent / "scripts"))
 
 import pytest
 from datasets import Dataset
-
 from format_training_data import (
     create_qwen2_dataset,
     format_example_for_qwen2,
@@ -200,7 +199,9 @@ class TestValidateTokenLengths:
         # Create test dataset
         examples = [
             {"text": "Short example"},
-            {"text": "This is a longer example with more tokens to test the validation"},
+            {
+                "text": "This is a longer example with more tokens to test the validation"
+            },
             {"text": "Medium length example"},
         ]
         dataset = Dataset.from_list(examples)
@@ -213,7 +214,10 @@ class TestValidateTokenLengths:
             [1, 2, 3, 4, 5, 6, 7, 8],  # 8 tokens
         ]
 
-        with patch("format_training_data.AutoTokenizer.from_pretrained", return_value=mock_tokenizer):
+        with patch(
+            "format_training_data.AutoTokenizer.from_pretrained",
+            return_value=mock_tokenizer,
+        ):
             stats = validate_token_lengths(dataset, "0.5B")
 
         assert stats["status"] == "validated"
@@ -229,7 +233,10 @@ class TestValidateTokenLengths:
         examples = [{"text": "Test example"}]
         dataset = Dataset.from_list(examples)
 
-        with patch("format_training_data.AutoTokenizer.from_pretrained", side_effect=Exception("Network error")):
+        with patch(
+            "format_training_data.AutoTokenizer.from_pretrained",
+            side_effect=Exception("Network error"),
+        ):
             stats = validate_token_lengths(dataset, "0.5B")
 
         assert stats["status"] == "estimated"
@@ -242,9 +249,14 @@ class TestValidateTokenLengths:
 
         # Mock tokenizer that returns too many tokens
         mock_tokenizer = MagicMock()
-        mock_tokenizer.encode.return_value = list(range(10000))  # 10000 tokens > 8192 limit
+        mock_tokenizer.encode.return_value = list(
+            range(10000)
+        )  # 10000 tokens > 8192 limit
 
-        with patch("format_training_data.AutoTokenizer.from_pretrained", return_value=mock_tokenizer):
+        with patch(
+            "format_training_data.AutoTokenizer.from_pretrained",
+            return_value=mock_tokenizer,
+        ):
             stats = validate_token_lengths(dataset, "0.5B")
 
         assert stats["over_limit"] == 1
@@ -329,7 +341,10 @@ class TestFormatTrainingDataForQwen2:
             mock_tokenizer = MagicMock()
             mock_tokenizer.encode.return_value = [1, 2, 3, 4, 5]  # 5 tokens
 
-            with patch("format_training_data.AutoTokenizer.from_pretrained", return_value=mock_tokenizer):
+            with patch(
+                "format_training_data.AutoTokenizer.from_pretrained",
+                return_value=mock_tokenizer,
+            ):
                 results = format_training_data_for_qwen2(
                     model_size="0.5B", data_dir=data_dir, output_dir=output_dir
                 )
@@ -364,7 +379,9 @@ class TestFormatTrainingDataForQwen2:
 
             # Test both model sizes
             for model_size in ["0.5B", "1.5B"]:
-                with patch("format_training_data.AutoTokenizer.from_pretrained") as mock_tokenizer_class:
+                with patch(
+                    "format_training_data.AutoTokenizer.from_pretrained"
+                ) as mock_tokenizer_class:
                     mock_tokenizer = MagicMock()
                     mock_tokenizer.encode.return_value = [1, 2, 3]
                     mock_tokenizer_class.return_value = mock_tokenizer

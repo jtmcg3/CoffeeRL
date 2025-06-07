@@ -14,14 +14,14 @@ from trl import SFTTrainer
 # Add src to path for imports
 sys.path.append(str(Path(__file__).parent))
 
-from config.platform_config import print_platform_summary
-from qlora_config import setup_training_environment
+from config.platform_config import print_platform_summary  # noqa: E402
+from qlora_config import setup_training_environment  # noqa: E402
 
 
 def load_datasets(
     train_path: str = "data/processed/coffee_training_dataset",
     eval_path: str = "data/processed/coffee_validation_dataset",
-):
+) -> tuple:
     """Load training and evaluation datasets."""
     print(f"Loading training dataset from: {train_path}")
     print(f"Loading evaluation dataset from: {eval_path}")
@@ -45,7 +45,7 @@ def train_model(
     eval_dataset,
     output_dir: str = "./models/coffee-qwen2-qlora",
     max_seq_length: int = 512,
-):
+) -> object:
     """Train the model using QLoRA."""
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
@@ -88,7 +88,7 @@ def train_model(
     return trainer
 
 
-def main():
+def main() -> int:
     """Main training function."""
     print("=== CoffeeRL-Lite QLoRA Training ===")
 
@@ -105,7 +105,7 @@ def main():
 
     # Train model
     try:
-        trainer = train_model(train_dataset, eval_dataset)
+        train_model(train_dataset, eval_dataset)
         print("Training completed successfully!")
         return 0
     except Exception as e:

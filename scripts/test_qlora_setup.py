@@ -7,7 +7,7 @@ from pathlib import Path
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from config.platform_config import (
+from config.platform_config import (  # noqa: E402
     get_device_map,
     get_gradient_accumulation_steps,
     get_optimal_qwen_model,
@@ -17,7 +17,7 @@ from config.platform_config import (
 )
 
 
-def test_platform_detection():
+def test_platform_detection() -> None:
     """Test platform detection functionality."""
     print("=== Testing Platform Detection ===")
 
@@ -36,7 +36,7 @@ def test_platform_detection():
     return True
 
 
-def test_qlora_config():
+def test_qlora_config() -> None:
     """Test QLoRA configuration setup."""
     print("\n=== Testing QLoRA Configuration ===")
 
@@ -63,7 +63,7 @@ def test_qlora_config():
         return False
 
 
-def test_docker_config():
+def test_docker_config() -> bool:
     """Test Docker configuration files."""
     print("\n=== Testing Docker Configuration ===")
 
@@ -95,7 +95,7 @@ def test_docker_config():
     return True
 
 
-def main():
+def main() -> int:
     """Run all tests."""
     print("🧪 Testing QLoRA Setup for CoffeeRL-Lite\n")
 

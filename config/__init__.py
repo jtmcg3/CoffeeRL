@@ -1,1 +1,1 @@
-"""Configuration package for CoffeeRL-Lite.""" 
+"""Configuration package for CoffeeRL-Lite."""
