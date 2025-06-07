@@ -1,45 +1,38 @@
 version: '3.8'
 
 services:
-  # Development service with full dev tools
-  cofferl-dev:
+  # Development environment
+  dev:
     build:
       context: .
       target: development
     volumes:
       - .:/app
-      - /app/.venv  # Exclude venv from volume mount
-    ports:
-      - "7860:7860"  # Gradio
-      - "8888:8888"  # Jupyter (if needed)
+      - models_cache:/app/models
+      - hf_cache:/app/.cache/huggingface
     environment:
-      - PYTHONPATH=/app/src
-    command: uv run python config/platform_config.py
-    profiles:
-      - dev
+      - COFFEE_DEV_MODE=true
+      - COFFEE_MAX_TRAIN_SAMPLES=50
+      - COFFEE_MAX_EVAL_SAMPLES=10
+    command: ["uv", "run", "python", "-m", "pytest", "-v"]
+    profiles: ["dev"]
 
-  # Production service
-  cofferl-prod:
+  # QLoRA training with GPU support
+  train:
     build:
       context: .
-      target: production
-    ports:
-      - "7860:7860"
+      target: qlora
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./output:/app/output
+      - ./logs:/app/logs
+      - hf_cache:/app/.cache/huggingface
+      - transformers_cache:/app/.cache/transformers
     environment:
-      - PYTHONPATH=/app/src
-    restart: unless-stopped
-    profiles:
-      - prod
-
-  # GPU-enabled service (requires nvidia-docker)
-  cofferl-gpu:
-    build:
-      context: .
-      target: production
-    ports:
-      - "7860:7860"
-    environment:
-      - PYTHONPATH=/app/src
+      - COFFEE_OUTPUT_DIR=/app/output
+      - TRANSFORMERS_CACHE=/app/.cache/transformers
+      - HF_HOME=/app/.cache/huggingface
       - CUDA_VISIBLE_DEVICES=0
     deploy:
       resources:
@@ -48,42 +41,59 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    command: ["uv", "run", "python", "src/train_qlora.py"]
+    profiles: ["train"]
+
+  # Production inference service
+  app:
+    build:
+      context: .
+      target: production
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data:ro
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
     restart: unless-stopped
-    profiles:
-      - gpu
+    profiles: ["prod"]
 
-  # QLoRA training service (CPU)
-  cofferl-qlora-cpu:
+  # Testing service
+  test:
     build:
       context: .
-      target: qlora
+      target: testing
     volumes:
-      - ./models:/app/models
-      - ./data:/app/data
+      - .:/app
     environment:
-      - PYTHONPATH=/app/src
-      - QWEN_MODEL_SIZE=0.5B
-    profiles:
-      - qlora-cpu
+      - COFFEE_DEV_MODE=true
+      - COFFEE_MAX_TRAIN_SAMPLES=10
+      - COFFEE_MAX_EVAL_SAMPLES=5
+    command: ["uv", "run", "python", "-m", "pytest", "-v", "--tb=short"]
+    profiles: ["test"]
 
-  # QLoRA training service (GPU)
-  cofferl-qlora-gpu:
+  # Jupyter notebook for development
+  notebook:
     build:
       context: .
-      target: qlora
+      target: development
+    ports:
+      - "8888:8888"
     volumes:
-      - ./models:/app/models
-      - ./data:/app/data
+      - .:/app
+      - models_cache:/app/models
+      - hf_cache:/app/.cache/huggingface
     environment:
-      - PYTHONPATH=/app/src
-      - CUDA_VISIBLE_DEVICES=0
-      - QWEN_MODEL_SIZE=1.5B
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-    profiles:
-      - qlora-gpu
+      - JUPYTER_ENABLE_LAB=yes
+    command: ["uv", "run", "jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+    profiles: ["notebook"]
+
+volumes:
+  models_cache:
+    driver: local
+  hf_cache:
+    driver: local
+  transformers_cache:
+    driver: local

@@ -6,7 +6,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PYTHONPATH=/app/src
+    PYTHONPATH=/app/src \
+    PLATFORM_OVERRIDE=LINUX_GPU
 
 # Install system dependencies for QLoRA training
 RUN apt-get update && apt-get install -y \
@@ -15,44 +16,61 @@ RUN apt-get update && apt-get install -y \
     curl \
     cmake \
     ninja-build \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Install UV
+# Install UV for faster dependency management
 RUN pip install uv
 
 # Set working directory
 WORKDIR /app
 
-# Copy dependency files
-COPY pyproject.toml uv.lock ./
+# Copy dependency files and README first for better layer caching
+COPY pyproject.toml uv.lock README.md ./
 
 # Install dependencies
 RUN uv sync --frozen
 
+# Development stage with additional tools
+FROM base as development
+RUN uv sync --frozen --group dev
+
 # Copy source code
 COPY . .
 
-# Development stage
-FROM base as development
-RUN uv sync --frozen --group dev
-CMD ["uv", "run", "python", "-m", "pytest"]
+# Create necessary directories
+RUN mkdir -p models data/processed logs
 
-# QLoRA training stage
+# Default command for development
+CMD ["uv", "run", "python", "-m", "pytest", "-v"]
+
+# QLoRA training stage optimized for GPU training
 FROM base as qlora
+
 # Install bitsandbytes for quantization support on Linux
 RUN uv add bitsandbytes
 
 # Copy source code
 COPY . .
 
-# Create models directory
-RUN mkdir -p models
+# Create necessary directories with proper permissions
+RUN mkdir -p models data/processed logs output && \
+    chmod -R 755 models data logs output
+
+# Set environment variables for training
+ENV COFFEE_OUTPUT_DIR=/app/output \
+    TRANSFORMERS_CACHE=/app/.cache/transformers \
+    HF_HOME=/app/.cache/huggingface
+
+# Create cache directories
+RUN mkdir -p /app/.cache/transformers /app/.cache/huggingface
 
 # Default command for training
 CMD ["uv", "run", "python", "src/train_qlora.py"]
 
-# Production stage
+# Production inference stage
 FROM base as production
+
 # Install only production dependencies
 RUN uv sync --frozen --no-dev
 
@@ -62,12 +80,29 @@ RUN uv add bitsandbytes
 # Copy source code
 COPY . .
 
-# Create non-root user
-RUN useradd --create-home --shell /bin/bash app
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash --uid 1000 app && \
+    mkdir -p models data logs && \
+    chown -R app:app /app
+
 USER app
 
-# Expose port for Gradio
+# Expose port for Gradio interface
 EXPOSE 7860
 
-# Default command
+# Default command for inference
 CMD ["uv", "run", "python", "main.py"]
+
+# Testing stage for CI/CD
+FROM development as testing
+
+# Copy test data if available
+COPY tests/ tests/
+
+# Set environment for testing
+ENV COFFEE_DEV_MODE=true \
+    COFFEE_MAX_TRAIN_SAMPLES=10 \
+    COFFEE_MAX_EVAL_SAMPLES=5
+
+# Run tests by default
+CMD ["uv", "run", "python", "-m", "pytest", "-v", "--tb=short"]

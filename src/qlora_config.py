@@ -173,7 +173,9 @@ def setup_training_environment() -> Tuple[Any, Any, TrainingArguments]:
     return model, tokenizer, training_args
 
 
-def format_training_data(examples: dict, tokenizer: Any, max_length: int = 512) -> dict[str, Any]:
+def format_training_data(
+    examples: dict, tokenizer: Any, max_length: int = 512
+) -> dict[str, Any]:
     """Format training data for Qwen2 fine-tuning."""
     # Combine input and output into a single text
     texts = []
