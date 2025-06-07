@@ -173,7 +173,7 @@ def setup_training_environment() -> Tuple[Any, Any, TrainingArguments]:
     return model, tokenizer, training_args
 
 
-def format_training_data(examples: dict, tokenizer: Any, max_length: int = 512) -> dict:
+def format_training_data(examples: dict, tokenizer: Any, max_length: int = 512) -> dict[str, Any]:
     """Format training data for Qwen2 fine-tuning."""
     # Combine input and output into a single text
     texts = []
@@ -193,4 +193,4 @@ def format_training_data(examples: dict, tokenizer: Any, max_length: int = 512) 
     # Set labels (for causal LM, labels are the same as input_ids)
     tokenized["labels"] = tokenized["input_ids"].copy()
 
-    return tokenized
+    return dict(tokenized)

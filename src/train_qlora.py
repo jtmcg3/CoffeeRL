@@ -41,8 +41,8 @@ def load_datasets(
 
 
 def train_model(
-    train_dataset,
-    eval_dataset,
+    train_dataset: object,
+    eval_dataset: object,
     output_dir: str = "./models/coffee-qwen2-qlora",
     max_seq_length: int = 512,
 ) -> object:

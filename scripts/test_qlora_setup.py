@@ -17,7 +17,7 @@ from config.platform_config import (  # noqa: E402
 )
 
 
-def test_platform_detection() -> None:
+def test_platform_detection() -> bool:
     """Test platform detection functionality."""
     print("=== Testing Platform Detection ===")
 
@@ -32,11 +32,10 @@ def test_platform_detection() -> None:
     print(f"✅ Batch size: {batch_size}")
     print(f"✅ Gradient accumulation: {grad_accum}")
     print(f"✅ Cloud environment: {is_cloud}")
-
     return True
 
 
-def test_qlora_config() -> None:
+def test_qlora_config() -> bool:
     """Test QLoRA configuration setup."""
     print("\n=== Testing QLoRA Configuration ===")
 
@@ -56,8 +55,8 @@ def test_qlora_config() -> None:
         print(f"✅ Gradient accumulation: {training_args.gradient_accumulation_steps}")
         print(f"✅ Learning rate: {training_args.learning_rate}")
         print(f"✅ Epochs: {training_args.num_train_epochs}")
-
         return True
+
     except Exception as e:
         print(f"❌ QLoRA config test failed: {e}")
         return False
@@ -110,7 +109,7 @@ def main() -> int:
         test_docker_config,
     ]
 
-    results = []
+    results: list[bool] = []
     for test in tests:
         try:
             result = test()
