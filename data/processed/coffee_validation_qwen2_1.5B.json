@@ -1,0 +1,302 @@
+[
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium-coarse grind, 3:45 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:21\", \"extraction\": \"under\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 420g water, fine grind, 4:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:23\", \"extraction\": \"under\", \"confidence\": 0.88}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 17g coffee, 289g water, medium grind, 2:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:17\", \"extraction\": \"under\", \"confidence\": 0.81}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 392g water, medium grind, 2:00 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:16\", \"extraction\": \"under\", \"confidence\": 0.91}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 357g water, fine grind, 3:30 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:58\", \"extraction\": \"under\", \"confidence\": 0.92}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 266g water, medium grind, 2:00 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:45\", \"extraction\": \"under\", \"confidence\": 0.76}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:30 brew time, tastes hollow in the middle\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"Hollow middle taste suggests uneven extraction. Slightly finer grind can help achieve more uniform extraction.\", \"expected_time\": \"3:45\", \"extraction\": \"under\", \"confidence\": 0.7}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 360g water, fine grind, 4:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:45\", \"extraction\": \"under\", \"confidence\": 0.76}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 294g water, medium-fine grind, 3:15 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:58\", \"extraction\": \"under\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 350g water, medium grind, 4:00 brew time, tastes flat and boring\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"Flat taste often indicates under-extraction. A slightly finer grind will increase extraction and bring out more flavor complexity.\", \"expected_time\": \"4:15\", \"extraction\": \"under\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 17g coffee, 272g water, medium-fine grind, 4:30 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:48\", \"extraction\": \"under\", \"confidence\": 0.89}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 18g coffee, 288g water, medium-coarse grind, 4:00 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:41\", \"extraction\": \"under\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 315g water, medium-coarse grind, 4:30 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"5:03\", \"extraction\": \"under\", \"confidence\": 0.78}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 272g water, medium-coarse grind, 4:30 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:51\", \"extraction\": \"under\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 405g water, medium grind, 2:45 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:04\", \"extraction\": \"under\", \"confidence\": 0.78}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 476g water, medium grind, 4:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:24\", \"extraction\": \"under\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 360g water, medium-coarse grind, 2:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:17\", \"extraction\": \"under\", \"confidence\": 0.79}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 360g water, medium grind, 3:15 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:46\", \"extraction\": \"under\", \"confidence\": 0.79}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 378g water, medium-fine grind, 3:45 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:03\", \"extraction\": \"under\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 392g water, medium-fine grind, 3:00 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:32\", \"extraction\": \"under\", \"confidence\": 0.87}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 14g coffee, 196g water, fine grind, 3:15 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:33\", \"extraction\": \"under\", \"confidence\": 0.87}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium-fine grind, 2:30 brew time, tastes bright but thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"Bright but thin suggests good acidity extraction but lacking body. Slightly finer grind will extract more soluble solids for better body.\", \"expected_time\": \"2:45\", \"extraction\": \"under\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 352g water, coarse grind, 2:15 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:39\", \"extraction\": \"under\", \"confidence\": 0.79}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 336g water, coarse grind, 2:00 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:41\", \"extraction\": \"under\", \"confidence\": 0.94}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 17g coffee, 289g water, medium-fine grind, 2:45 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"3:10\", \"extraction\": \"under\", \"confidence\": 0.78}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 400g water, medium-coarse grind, 4:30 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"5:01\", \"extraction\": \"under\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 330g water, medium grind, 2:15 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:35\", \"extraction\": \"under\", \"confidence\": 0.74}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 400g water, medium-fine grind, 5:00 brew time, tastes thin\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The thin taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"5:45\", \"extraction\": \"under\", \"confidence\": 0.79}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 350g water, medium-coarse grind, 2:30 brew time, tastes thin and acidic\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"Thin, acidic taste suggests under-extraction despite reasonable brew time. The medium-coarse grind is too coarse for this ratio.\", \"expected_time\": \"3:15\", \"extraction\": \"under\", \"confidence\": 0.85}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 420g water, fine grind, 5:00 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The sour taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"5:24\", \"extraction\": \"under\", \"confidence\": 0.76}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 240g water, medium-coarse grind, 2:00 brew time, tastes weak and sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"Fast brew time with weak, sour result indicates under-extraction. Finer grind will slow flow and increase extraction yield.\", \"expected_time\": \"2:45\", \"extraction\": \"under\", \"confidence\": 0.85}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 322g water, coarse grind, 2:30 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"2:55\", \"extraction\": \"under\", \"confidence\": 0.89}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 18g coffee, 306g water, medium-fine grind, 3:45 brew time, tastes grassy\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_1\", \"reasoning\": \"The grassy taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"4:06\", \"extraction\": \"under\", \"confidence\": 0.83}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:00 brew time, tastes balanced with good clarity\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"Balanced flavor with good clarity indicates optimal extraction. This is a well-dialed recipe that should be maintained.\", \"expected_time\": \"3:00\", \"extraction\": \"good\", \"confidence\": 0.95}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 432g water, coarse grind, 2:00 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:00\", \"extraction\": \"good\", \"confidence\": 0.88}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 15g coffee, 255g water, medium-coarse grind, 4:15 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:15\", \"extraction\": \"good\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 15g coffee, 255g water, coarse grind, 4:15 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:15\", \"extraction\": \"good\", \"confidence\": 0.81}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:15 brew time, tastes balanced and sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"Perfect balance of sweetness and acidity indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"3:15\", \"extraction\": \"good\", \"confidence\": 0.95}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 294g water, medium grind, 4:00 brew time, tastes complex\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:00\", \"extraction\": \"good\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"A finer grind will increase the surface area of the coffee particles, allowing for better extraction and a stronger flavor.\", \"expected_time\": \"2:45\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:30 brew time, tastes too bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The coffee is likely over-extracted, causing bitterness. By adjusting to a coarser grind, we can decrease the extraction and reduce bitterness.\", \"expected_time\": \"4:00\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 336g water, medium-fine grind, 2:00 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:00\", \"extraction\": \"good\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:00 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"Sour taste can indicate under-extraction, meaning the coffee grounds need to be finer to increase extraction.\", \"expected_time\": \"2:45\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 18g coffee, 252g water, medium-fine grind, 2:00 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:00\", \"extraction\": \"good\", \"confidence\": 0.81}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 350g water, medium grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The coffee tastes bitter, which could indicate over-extraction. By adjusting to a coarser grind, we can reduce extraction and balance out the flavors.\", \"expected_time\": \"4:00\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 340g water, medium-coarse grind, 3:15 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"3:15\", \"extraction\": \"good\", \"confidence\": 0.77}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 260g water, medium-fine grind, 2:50 brew time, tastes fruity and bright\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"Bright, fruity notes with good balance suggest excellent extraction. No adjustment needed.\", \"expected_time\": \"2:50\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 285g water, medium grind, 3:15 brew time, tastes clean with distinct origin character\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"Clean cup with distinct origin character shows proper extraction highlighting the coffee's unique qualities. No adjustment needed.\", \"expected_time\": \"3:15\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The bitter taste indicates over-extraction, which can be caused by a too fine grind. By adjusting the grind to be coarser, we can reduce the extraction and balance out the flavors.\", \"expected_time\": \"4:00\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:00 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The bitter taste indicates over-extraction, meaning the coffee grounds were extracted too much. By coarsening the grind, we can reduce the extraction and balance out the flavors.\", \"expected_time\": \"3:15\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 300g water, medium grind, 3:45 brew time, tastes intense but balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"Strong ratio with balanced flavor indicates good extraction. The intensity is from the high coffee concentration, not over-extraction.\", \"expected_time\": \"3:45\", \"extraction\": \"good\", \"confidence\": 0.85}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:30 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"A sour taste often indicates under-extraction, meaning the coffee grounds need more surface area exposed to water to extract more flavors.\", \"expected_time\": \"3:00\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The coffee tastes weak because the grind is too coarse, leading to under-extraction. Finer grind will increase extraction and strength.\", \"expected_time\": \"2:45\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 2:30 brew time, tastes sour\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The sour taste indicates under-extraction, grinding finer will increase extraction by exposing more surface area of the coffee particles to water.\", \"expected_time\": \"2:15\", \"extraction\": \"good\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 323g water, medium-coarse grind, 4:15 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:15\", \"extraction\": \"good\", \"confidence\": 0.73}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 308g water, coarse grind, 3:00 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"3:00\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 294g water, medium grind, 4:15 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:15\", \"extraction\": \"good\", \"confidence\": 0.77}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 304g water, medium-fine grind, 5:00 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"5:00\", \"extraction\": \"good\", \"confidence\": 0.74}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The coffee tastes bitter, indicating over-extraction. By adjusting the grind to be coarser, we can decrease extraction time and reduce bitterness.\", \"expected_time\": \"3:00\", \"extraction\": \"good\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 391g water, fine grind, 2:15 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:15\", \"extraction\": \"good\", \"confidence\": 0.77}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 374g water, medium-fine grind, 4:30 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"4:30\", \"extraction\": \"good\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 448g water, medium-coarse grind, 2:30 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:30\", \"extraction\": \"good\", \"confidence\": 0.81}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 272g water, medium-fine grind, 2:30 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:30\", \"extraction\": \"good\", \"confidence\": 0.86}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 26g coffee, 442g water, fine grind, 2:45 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:45\", \"extraction\": \"good\", \"confidence\": 0.78}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 425g water, medium grind, 3:15 brew time, tastes balanced\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"3:15\", \"extraction\": \"good\", \"confidence\": 0.71}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 14g coffee, 224g water, medium-coarse grind, 2:45 brew time, tastes sweet\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"none\", \"reasoning\": \"The balanced flavor profile indicates optimal extraction. Current parameters are working well.\", \"expected_time\": \"2:45\", \"extraction\": \"good\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 384g water, coarse grind, 2:45 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:01\", \"extraction\": \"over\", \"confidence\": 0.83}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 30g coffee, 500g water, medium grind, 6:00 brew time, tastes muddy and bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_3\", \"reasoning\": \"Large batch with very long brew time causes over-extraction and muddy flavors. Much coarser grind needed for faster flow.\", \"expected_time\": \"4:30\", \"extraction\": \"over\", \"confidence\": 0.85}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 322g water, medium-fine grind, 4:15 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The bitter taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:36\", \"extraction\": \"over\", \"confidence\": 0.78}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 350g water, medium-fine grind, 4:30 brew time, tastes overwhelming and bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"Strong ratio with bitter taste and long brew time indicates over-extraction. Coarser grind will reduce extraction while maintaining strength.\", \"expected_time\": \"3:45\", \"extraction\": \"over\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 400g water, medium grind, 5:30 brew time, tastes burnt and harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_3\", \"reasoning\": \"Burnt, harsh flavors with very long brew time suggest severe over-extraction. Much coarser grind needed to reduce extraction.\", \"expected_time\": \"4:00\", \"extraction\": \"over\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 272g water, fine grind, 2:00 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.79}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:00 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The coffee tasting bitter indicates over-extraction, which can be caused by a too fine grind. By adjusting to a coarser grind, we can reduce the extraction and balance out the flavors.\", \"expected_time\": \"3:15\", \"extraction\": \"over\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium-fine grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The bitter taste could be due to over-extraction, meaning the grind is too fine. By adjusting to a coarser grind, we can decrease extraction and reduce bitterness.\", \"expected_time\": \"3:45\", \"extraction\": \"over\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 17g coffee, 238g water, coarse grind, 3:15 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:00\", \"extraction\": \"over\", \"confidence\": 0.82}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 12g coffee, 200g water, fine grind, 3:45 brew time, tastes weak but bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"Low coffee ratio with fine grind creates weak but over-extracted brew. Coarser grind will reduce bitterness while maintaining strength.\", \"expected_time\": \"3:00\", \"extraction\": \"over\", \"confidence\": 0.75}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 24g coffee, 336g water, coarse grind, 3:45 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:19\", \"extraction\": \"over\", \"confidence\": 0.94}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 370g water, fine grind, 5:00 brew time, tastes dry and chalky\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"Dry, chalky mouthfeel suggests over-extraction. Coarser grind will reduce extraction time and improve mouthfeel.\", \"expected_time\": \"3:45\", \"extraction\": \"over\", \"confidence\": 0.8}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 26g coffee, 442g water, coarse grind, 4:30 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"4:08\", \"extraction\": \"over\", \"confidence\": 0.81}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 476g water, medium-fine grind, 2:00 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.91}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 378g water, fine grind, 4:30 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"4:01\", \"extraction\": \"over\", \"confidence\": 0.86}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 266g water, medium grind, 2:30 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:01\", \"extraction\": \"over\", \"confidence\": 0.71}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 15g coffee, 210g water, medium-fine grind, 2:45 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:28\", \"extraction\": \"over\", \"confidence\": 0.93}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 21g coffee, 315g water, fine grind, 4:15 brew time, tastes astringent and dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"Astringent, dry finish indicates over-extraction of tannins. Coarser grind will reduce astringency and improve balance.\", \"expected_time\": \"3:30\", \"extraction\": \"over\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 14g coffee, 238g water, coarse grind, 5:00 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"4:27\", \"extraction\": \"over\", \"confidence\": 0.88}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 28g coffee, 476g water, medium-fine grind, 3:15 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:38\", \"extraction\": \"over\", \"confidence\": 0.77}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 322g water, medium-fine grind, 3:45 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:00\", \"extraction\": \"over\", \"confidence\": 0.94}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 300g water, medium grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The bitter taste could be a result of over-extraction, meaning the coffee grounds were extracting too much, too quickly. By adjusting to a coarser grind, we can slow down the extraction process and reduce the bitterness.\", \"expected_time\": \"4:00\", \"extraction\": \"over\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 16g coffee, 240g water, medium-fine grind, 4:30 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:52\", \"extraction\": \"over\", \"confidence\": 0.88}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 330g water, medium-coarse grind, 2:30 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 378g water, medium-fine grind, 5:00 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"4:27\", \"extraction\": \"over\", \"confidence\": 0.7}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 27g coffee, 378g water, medium-coarse grind, 4:15 brew time, tastes astringent\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The astringent taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:30\", \"extraction\": \"over\", \"confidence\": 0.87}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 304g water, fine grind, 3:30 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:15\", \"extraction\": \"over\", \"confidence\": 0.94}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 20g coffee, 320g water, medium grind, 3:30 brew time, tastes bitter\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_2\", \"reasoning\": \"The bitter taste indicates over-extraction, meaning the coffee grounds are being extracted too much. By adjusting to a coarser grind, we can decrease extraction and reduce bitterness.\", \"expected_time\": \"3:45\", \"extraction\": \"over\", \"confidence\": 0.9}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 18g coffee, 270g water, medium grind, 2:30 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.86}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 14g coffee, 196g water, medium-coarse grind, 2:00 brew time, tastes harsh\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The harsh taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.82}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 19g coffee, 266g water, coarse grind, 2:00 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.84}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 25g coffee, 375g water, coarse grind, 2:00 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"2:00\", \"extraction\": \"over\", \"confidence\": 0.91}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 23g coffee, 368g water, medium grind, 3:45 brew time, tastes dry\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"coarser_1\", \"reasoning\": \"The dry taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.\", \"expected_time\": \"3:24\", \"extraction\": \"over\", \"confidence\": 0.71}"
+  },
+  {
+    "text": "Analyze this V60 brew: V60, 22g coffee, 308g water, coarse grind, 5:00 brew time, tastes weak\n\nProvide grind adjustment, expected brew time, extraction assessment, and reasoning:\n{\"grind_change\": \"finer_2\", \"reasoning\": \"The weak taste indicates under-extraction. A finer grind will increase extraction and improve flavor balance.\", \"expected_time\": \"5:43\", \"extraction\": \"under\", \"confidence\": 0.83}"
+  }
+]
