@@ -1,6 +1,4 @@
-"""
-Tests for the model performance analysis script.
-"""
+"""Tests for the analyze_performance module."""
 
 import json
 import sys
@@ -12,9 +10,9 @@ from unittest.mock import patch
 import matplotlib
 
 # Add src to path for imports
-sys.path.insert(0, "src")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from analyze_performance import ModelPerformanceAnalyzer
+from src.analyze_performance import ModelPerformanceAnalyzer  # noqa: E402
 
 matplotlib.use("Agg")  # Use non-interactive backend for testing
 

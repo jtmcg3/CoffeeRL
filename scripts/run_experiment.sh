@@ -141,6 +141,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Validate arguments
+if [[ "$MODEL_SIZE" != "0.5B" && "$MODEL_SIZE" != "1.5B" ]]; then
+    print_error "Invalid model size: ${MODEL_SIZE}. Must be '0.5B' or '1.5B'."
+    exit 1
+fi
+
 # Function to check prerequisites
 check_prerequisites() {
     print_header "CHECKING PREREQUISITES"

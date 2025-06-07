@@ -143,9 +143,6 @@ def parse_arguments() -> argparse.Namespace:
 
 def setup_environment_variables(args: argparse.Namespace) -> None:
     """Set environment variables based on command line arguments."""
-    # Override model selection
-    os.environ["QWEN_MODEL_SIZE"] = "0.5B"  # Force 0.5B for local training
-
     # Set development mode if requested
     if args.dev_mode:
         os.environ["COFFEE_DEV_MODE"] = "true"

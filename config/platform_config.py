@@ -11,6 +11,8 @@ import sys
 import warnings
 from typing import Any, Optional
 
+import torch
+
 
 def get_platform_info() -> dict[str, Any]:
     """Get current platform information."""
@@ -216,6 +218,79 @@ def print_platform_summary() -> None:
         f"PyTorch MPS available: {'✅' if torch.backends.mps.is_available() else '❌'}"
     )
     print("=" * 40)
+
+
+def detect_platform():
+    """Detect the current platform and available hardware acceleration."""
+    system = platform.system()
+    architecture = platform.machine()
+
+    # Determine platform type
+    if system == "Darwin":
+        platform_name = "macOS"
+        if architecture == "arm64":
+            platform_name += " (Apple Silicon)"
+        else:
+            platform_name += " (Intel)"
+    elif system == "Linux":
+        platform_name = "Linux"
+        # Check if running in container
+        if os.path.exists("/.dockerenv"):
+            platform_name += " (Docker)"
+    elif system == "Windows":
+        platform_name = "Windows"
+    else:
+        platform_name = system
+
+    # Determine available device
+    if torch.cuda.is_available():
+        device = "cuda"
+        device_name = torch.cuda.get_device_name(0)
+    elif hasattr(torch, "mps") and torch.backends.mps.is_available():
+        device = "mps"
+        device_name = "Apple Metal"
+    else:
+        device = "cpu"
+        device_name = "CPU"
+
+    return {
+        "platform": platform_name,
+        "system": system,
+        "architecture": architecture,
+        "device": device,
+        "device_name": device_name,
+    }
+
+
+def get_platform_settings(platform_info):
+    """Get platform-specific settings for optimal performance."""
+    settings = {
+        "share": False,  # Default to not sharing publicly
+        "server_name": "0.0.0.0",  # Listen on all interfaces by default
+        "server_port": 7860,
+    }
+
+    # Platform-specific optimizations
+    if platform_info["device"] == "cuda":
+        settings["batch_size"] = 4
+        settings["precision"] = "float16"
+    elif platform_info["device"] == "mps":
+        settings["batch_size"] = 2
+        settings["precision"] = "float16"
+    else:  # CPU
+        settings["batch_size"] = 1
+        settings["precision"] = "float32"
+        settings["low_memory"] = True
+
+    # Development vs production settings
+    if platform_info["system"] == "Darwin":  # macOS - likely development
+        settings["server_name"] = "127.0.0.1"  # Local only
+        settings["debug"] = True
+    elif "Docker" in platform_info["platform"]:  # Production container
+        settings["server_name"] = "0.0.0.0"  # Listen on all interfaces
+        settings["debug"] = False
+
+    return settings
 
 
 if __name__ == "__main__":
