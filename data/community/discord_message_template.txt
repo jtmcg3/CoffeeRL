@@ -1,10 +1,10 @@
 Hey coffee friends! 👋
 
-I'm building an AI brewing assistant and could use your V60 experiences to train it. 
+I'm building an AI brewing assistant and could use your V60 experiences to train it.
 
 Quick ask: If you've made a V60 recently, could you share:
 • Coffee/water amounts
-• Grind size & brew time  
+• Grind size & brew time
 • How it tasted
 • What you'd change
 

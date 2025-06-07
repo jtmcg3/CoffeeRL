@@ -17,37 +17,37 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from community_collection import (
     CommunityDataProcessor,
+    create_outreach_templates,
+    generate_web_form_html,
     save_outreach_templates,
     save_web_form,
-    create_outreach_templates,
-    generate_web_form_html
 )
 
 
 def main():
     """Set up the community collection system."""
     print("🚀 Setting up Community Contribution Collection System...")
-    
+
     # Initialize processor (creates directories)
     processor = CommunityDataProcessor()
     print(f"✅ Created output directory: {processor.output_dir}")
-    
+
     # Generate and save web form
     save_web_form()
     print("✅ Generated web form HTML")
-    
+
     # Generate and save outreach templates
     save_outreach_templates()
     print("✅ Generated outreach templates")
-    
+
     # Create example CSV structure
     create_example_csv()
     print("✅ Created example CSV structure")
-    
+
     # Create usage instructions
     create_usage_instructions()
     print("✅ Created usage instructions")
-    
+
     print("\n🎉 Community collection system setup complete!")
     print("\nNext steps:")
     print("1. Review the generated files in data/community/")
@@ -59,7 +59,7 @@ def main():
 def create_example_csv():
     """Create an example CSV file showing the expected format."""
     import pandas as pd
-    
+
     # Example data matching the form fields
     example_data = [
         {
@@ -69,7 +69,7 @@ def create_example_csv():
             "brew_time": "3:30",
             "taste_notes": "bitter and harsh",
             "adjustment": "coarser",
-            "reasoning": "The bitter taste indicates over-extraction. A coarser grind will reduce extraction and improve balance."
+            "reasoning": "The bitter taste indicates over-extraction. A coarser grind will reduce extraction and improve balance.",
         },
         {
             "coffee_amount": 18.0,
@@ -78,7 +78,7 @@ def create_example_csv():
             "brew_time": "2:45",
             "taste_notes": "sour and weak",
             "adjustment": "finer",
-            "reasoning": "Sour taste suggests under-extraction. A finer grind will increase extraction and improve flavor."
+            "reasoning": "Sour taste suggests under-extraction. A finer grind will increase extraction and improve flavor.",
         },
         {
             "coffee_amount": 22.0,
@@ -87,10 +87,10 @@ def create_example_csv():
             "brew_time": "3:15",
             "taste_notes": "balanced and sweet",
             "adjustment": "no_change",
-            "reasoning": "Perfect balance indicates optimal extraction. Current parameters are working well."
-        }
+            "reasoning": "Perfect balance indicates optimal extraction. Current parameters are working well.",
+        },
     ]
-    
+
     df = pd.DataFrame(example_data)
     output_path = Path("data/community/example_responses.csv")
     df.to_csv(output_path, index=False)
@@ -206,12 +206,12 @@ Goal is to collect 200 high-quality examples from:
 - Coffee shop baristas (75-100 examples)
 - Other coffee forums (25-50 examples)
 """
-    
+
     output_path = Path("data/community/README.md")
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         f.write(instructions)
     print(f"✅ Created usage instructions: {output_path}")
 
 
 if __name__ == "__main__":
-    main() 
+    main()

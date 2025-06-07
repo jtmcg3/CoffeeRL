@@ -10,7 +10,7 @@ I'm collecting real brewing experiences from the community. If you've brewed a V
 
 **What I need:**
 - Coffee amount (g)
-- Water amount (g) 
+- Water amount (g)
 - Grind size
 - Total brew time
 - How it tasted

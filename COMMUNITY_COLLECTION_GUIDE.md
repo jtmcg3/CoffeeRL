@@ -11,7 +11,7 @@
 Use the pre-written templates in `data/community/`:
 - `reddit_post_template.txt` - For r/coffee, r/espresso
 - `discord_message_template.txt` - For Discord coffee servers
-- `slack_message_template.txt` - For Slack coffee communities  
+- `slack_message_template.txt` - For Slack coffee communities
 - `coffee_shop_email_template.txt` - For professional baristas
 
 ### 3. **Process Data** ⚙️
@@ -66,7 +66,7 @@ The system automatically:
 ## **Target Distribution**
 
 - **Reddit communities**: 50-75 examples
-- **Discord/Slack groups**: 25-50 examples  
+- **Discord/Slack groups**: 25-50 examples
 - **Coffee shop baristas**: 75-100 examples
 - **Other forums**: 25-50 examples
 - **Total Goal**: 200 high-quality examples
@@ -100,4 +100,4 @@ src/
 
 - Check `data/community/README.md` for detailed documentation
 - Run `python scripts/test_community_processing.py` to test functionality
-- Use `data/community/example_responses.csv` as a reference format 
+- Use `data/community/example_responses.csv` as a reference format
