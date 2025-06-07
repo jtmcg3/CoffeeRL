@@ -2,8 +2,10 @@
 
 This module handles platform-specific dependencies and configurations,
 particularly for packages like bitsandbytes that don't support all platforms.
+Includes QLoRA-specific configurations for Qwen2 models.
 """
 
+import os
 import platform
 import sys
 import warnings
@@ -100,6 +102,91 @@ def get_torch_dtype() -> Any:
         return torch.float32
 
 
+def is_cloud_environment() -> bool:
+    """Detect if running in a cloud environment (Colab, AWS, etc.)."""
+    # Check for common cloud environment indicators
+    cloud_indicators = [
+        "COLAB_GPU",  # Google Colab
+        "AWS_EXECUTION_ENV",  # AWS Lambda/EC2
+        "AZURE_CLIENT_ID",  # Azure
+        "KAGGLE_KERNEL_RUN_TYPE",  # Kaggle
+        "PAPERSPACE_NOTEBOOK_REPO_ID",  # Paperspace
+    ]
+
+    for indicator in cloud_indicators:
+        if os.getenv(indicator):
+            return True
+
+    # Check for Docker environment
+    if os.path.exists("/.dockerenv"):
+        return True
+
+    # Check for high-memory systems (likely cloud)
+    try:
+        import psutil
+
+        total_memory_gb = psutil.virtual_memory().total / (1024**3)
+        if total_memory_gb > 12:  # Assume cloud if >12GB RAM
+            return True
+    except ImportError:
+        pass
+
+    return False
+
+
+def get_optimal_qwen_model() -> str:
+    """Select optimal Qwen2 model based on platform and resources."""
+    # Allow manual override via environment variable
+    manual_model = os.getenv("QWEN_MODEL_SIZE")
+    if manual_model:
+        if manual_model in ["0.5B", "1.5B"]:
+            return f"Qwen/Qwen2-{manual_model}"
+        else:
+            warnings.warn(
+                f"Invalid QWEN_MODEL_SIZE: {manual_model}. Using auto-detection.",
+                UserWarning,
+            )
+
+    # Auto-detect based on environment
+    if is_cloud_environment():
+        return "Qwen/Qwen2-1.5B"
+    else:
+        return "Qwen/Qwen2-0.5B"
+
+
+def get_device_map() -> str:
+    """Get appropriate device mapping strategy."""
+    import torch
+
+    if torch.cuda.is_available():
+        return "auto"
+    elif torch.backends.mps.is_available():
+        # For Apple Silicon, use CPU for now as MPS has limitations with some operations
+        return "cpu"
+    else:
+        return "cpu"
+
+
+def get_training_batch_size() -> int:
+    """Get optimal batch size based on platform."""
+    platform_info = get_platform_info()
+
+    if is_cloud_environment():
+        return 4  # Higher batch size for cloud with more memory
+    elif platform_info["is_macos"] and platform_info["is_arm64"]:
+        return 2  # Conservative for Apple Silicon
+    else:
+        return 2  # Conservative default
+
+
+def get_gradient_accumulation_steps() -> int:
+    """Get gradient accumulation steps based on platform."""
+    if is_cloud_environment():
+        return 4
+    else:
+        return 8  # More accumulation for smaller batch sizes
+
+
 def print_platform_summary() -> None:
     """Print a summary of platform capabilities."""
     platform_info = get_platform_info()
@@ -108,7 +195,12 @@ def print_platform_summary() -> None:
     print("=== CoffeeRL-Lite Platform Summary ===")
     print(f"System: {platform_info['system']} {platform_info['machine']}")
     print(f"Python: {platform_info['python_version'].split()[0]}")
+    print(f"Cloud environment: {'✅' if is_cloud_environment() else '❌'}")
     print(f"bitsandbytes support: {'✅' if bnb_available else '❌'}")
+    print(f"Optimal Qwen2 model: {get_optimal_qwen_model()}")
+    print(f"Device mapping: {get_device_map()}")
+    print(f"Training batch size: {get_training_batch_size()}")
+    print(f"Gradient accumulation: {get_gradient_accumulation_steps()}")
 
     if not bnb_available:
         print("📝 Note: Quantization features disabled on this platform")

@@ -51,3 +51,39 @@ services:
     restart: unless-stopped
     profiles:
       - gpu
+
+  # QLoRA training service (CPU)
+  cofferl-qlora-cpu:
+    build:
+      context: .
+      target: qlora
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app/src
+      - QWEN_MODEL_SIZE=0.5B
+    profiles:
+      - qlora-cpu
+
+  # QLoRA training service (GPU)
+  cofferl-qlora-gpu:
+    build:
+      context: .
+      target: qlora
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app/src
+      - CUDA_VISIBLE_DEVICES=0
+      - QWEN_MODEL_SIZE=1.5B
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    profiles:
+      - qlora-gpu
