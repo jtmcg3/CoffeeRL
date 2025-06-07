@@ -219,10 +219,14 @@ run_training() {
     print_status "Output directory: $model_output_dir"
 
     # Run training
-    if uv run python src/train_local.py $training_args 2>&1 | tee "${OUTPUT_DIR}/training.log"; then
+    if uv run python src/train_local.py $training_args > "${OUTPUT_DIR}/training.log" 2>&1; then
         print_success "Training completed successfully"
+        # Also display the log for immediate feedback
+        tail -20 "${OUTPUT_DIR}/training.log"
     else
         print_error "Training failed. Check ${OUTPUT_DIR}/training.log for details."
+        echo "Last 20 lines of training log:"
+        tail -20 "${OUTPUT_DIR}/training.log"
         exit 1
     fi
 

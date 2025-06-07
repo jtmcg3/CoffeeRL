@@ -293,7 +293,6 @@ def train_local_model(args: argparse.Namespace) -> Tuple[SFTTrainer, Dict[str, A
         processing_class=tokenizer,
         peft_config=None,  # PEFT config handled in model setup
         formatting_func=format_coffee_example,
-        max_seq_length=args.max_seq_length,
     )
 
     # Start training
