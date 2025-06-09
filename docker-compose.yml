@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  # PostgreSQL database for development and testing
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: cofferl_dev
+      POSTGRES_USER: cofferl
+      POSTGRES_PASSWORD: cofferl_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cofferl -d cofferl_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: ["dev", "test", "db"]
+
   # Development environment
   dev:
     build:
@@ -14,7 +32,11 @@ services:
       - COFFEE_DEV_MODE=true
       - COFFEE_MAX_TRAIN_SAMPLES=50
       - COFFEE_MAX_EVAL_SAMPLES=10
+      - DATABASE_URL=postgresql://cofferl:cofferl_dev_password@postgres:5432/cofferl_dev
     command: ["uv", "run", "python", "-m", "pytest", "-v"]
+    depends_on:
+      postgres:
+        condition: service_healthy
     profiles: ["dev"]
 
   # QLoRA training with GPU support
@@ -71,7 +93,11 @@ services:
       - COFFEE_DEV_MODE=true
       - COFFEE_MAX_TRAIN_SAMPLES=10
       - COFFEE_MAX_EVAL_SAMPLES=5
+      - DATABASE_URL=postgresql://cofferl:cofferl_dev_password@postgres:5432/cofferl_dev
     command: ["uv", "run", "python", "-m", "pytest", "-v", "--tb=short"]
+    depends_on:
+      postgres:
+        condition: service_healthy
     profiles: ["test"]
 
   # Jupyter notebook for development
@@ -87,7 +113,11 @@ services:
       - hf_cache:/app/.cache/huggingface
     environment:
       - JUPYTER_ENABLE_LAB=yes
+      - DATABASE_URL=postgresql://cofferl:cofferl_dev_password@postgres:5432/cofferl_dev
     command: ["uv", "run", "jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+    depends_on:
+      postgres:
+        condition: service_healthy
     profiles: ["notebook"]
 
 volumes:
@@ -96,4 +126,6 @@ volumes:
   hf_cache:
     driver: local
   transformers_cache:
+    driver: local
+  postgres_data:
     driver: local
