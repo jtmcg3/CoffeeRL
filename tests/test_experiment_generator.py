@@ -299,7 +299,7 @@ class TestExperimentGenerator:
         for params, score in result:
             assert isinstance(params, BrewingParameters)
             assert isinstance(score, float)
-            assert score == 0.0  # Placeholder returns 0.0 scores
+            assert 0.0 <= score <= 1.0  # Scores should be in valid range
 
     def test_score_experiment_candidates_sorting(self):
         """Test that candidate scoring returns sorted results."""
@@ -322,6 +322,361 @@ class TestExperimentGenerator:
         # Verify sorting (descending by score)
         scores = [score for _, score in result]
         assert scores == sorted(scores, reverse=True)
+
+    def test_calculate_information_gain_score_no_components(self):
+        """Test information gain scoring with no components configured."""
+        generator = ExperimentGenerator()
+
+        params = BrewingParameters(
+            water_temp=90.0,
+            coffee_dose=18.0,
+            water_amount=300.0,
+            grind_size=GrindSize.MEDIUM,
+            brew_time=240.0,
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        score = generator._calculate_information_gain_score(params)
+        assert score == 0.0  # No components configured
+
+    def test_calculate_feasibility_score_optimal_params(self):
+        """Test feasibility scoring with optimal brewing parameters."""
+        generator = ExperimentGenerator()
+
+        # Optimal pour over parameters
+        params = BrewingParameters(
+            water_temp=92.0,  # Optimal range
+            coffee_dose=18.0,
+            water_amount=270.0,  # 15:1 ratio - good
+            grind_size=GrindSize.MEDIUM,  # Appropriate for pour over
+            brew_time=240.0,  # 4 minutes - good for pour over
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        score = generator._calculate_feasibility_score(params)
+        assert score == 1.0  # Should be perfect feasibility
+
+    def test_calculate_feasibility_score_poor_params(self):
+        """Test feasibility scoring with poor brewing parameters."""
+        generator = ExperimentGenerator()
+
+        # Poor parameters
+        params = BrewingParameters(
+            water_temp=75.0,  # Too low
+            coffee_dose=18.0,
+            water_amount=500.0,  # Very high ratio (27:1)
+            grind_size=GrindSize.VERY_FINE,  # Wrong for pour over
+            brew_time=600.0,  # Too long (10 minutes)
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        score = generator._calculate_feasibility_score(params)
+        assert score < 0.5  # Should be low feasibility
+
+    def test_calculate_feasibility_score_espresso(self):
+        """Test feasibility scoring for espresso parameters."""
+        generator = ExperimentGenerator()
+
+        # Good espresso parameters
+        params = BrewingParameters(
+            water_temp=93.0,
+            coffee_dose=18.0,
+            water_amount=36.0,  # 2:1 ratio - good for espresso
+            grind_size=GrindSize.FINE,  # Appropriate for espresso
+            brew_time=30.0,  # 30 seconds - good
+            brew_method=BrewMethod.ESPRESSO,
+        )
+
+        score = generator._calculate_feasibility_score(params)
+        assert score >= 0.8  # Should be high feasibility
+
+    def test_combine_scores_equal_weights(self):
+        """Test score combination with equal weights."""
+        generator = ExperimentGenerator()
+
+        combined = generator._combine_scores(0.8, 0.6, 0.5, 0.5)
+        expected = (0.8 * 0.5) + (0.6 * 0.5)  # 0.7
+        assert abs(combined - expected) < 0.001
+
+    def test_combine_scores_custom_weights(self):
+        """Test score combination with custom weights."""
+        generator = ExperimentGenerator()
+
+        # 70% info gain, 30% feasibility
+        combined = generator._combine_scores(0.8, 0.6, 0.7, 0.3)
+        expected = (0.8 * 0.7) + (0.6 * 0.3)  # 0.74
+        assert abs(combined - expected) < 0.001
+
+    def test_combine_scores_weight_normalization(self):
+        """Test that weights are normalized if they don't sum to 1."""
+        generator = ExperimentGenerator()
+
+        # Weights sum to 2.0, should be normalized
+        combined = generator._combine_scores(0.8, 0.6, 1.0, 1.0)
+        expected = (0.8 * 0.5) + (0.6 * 0.5)  # Should normalize to 0.5, 0.5
+        assert abs(combined - expected) < 0.001
+
+    def test_score_experiment_candidates_with_tokenizer(self):
+        """Test scoring with uncertainty estimator and tokenizer."""
+        # Create mock uncertainty estimator
+        mock_estimator = MagicMock(spec=UncertaintyEstimator)
+        mock_estimator.estimate_uncertainty.return_value = {
+            "total_uncertainty": torch.tensor([2.0])
+        }
+
+        # Create mock tokenizer
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.return_value = {
+            "input_ids": torch.tensor([[1, 2, 3]]),
+            "attention_mask": torch.tensor([[1, 1, 1]]),
+        }
+
+        generator = ExperimentGenerator(uncertainty_estimator=mock_estimator)
+
+        candidates = [
+            BrewingParameters(
+                water_temp=90.0,
+                coffee_dose=18.0,
+                water_amount=300.0,
+                grind_size=GrindSize.MEDIUM,
+                brew_time=240.0,
+                brew_method=BrewMethod.POUR_OVER,
+            )
+        ]
+
+        result = generator._score_experiment_candidates(candidates, mock_tokenizer)
+
+        assert len(result) == 1
+        params, score = result[0]
+        assert isinstance(score, float)
+        assert score > 0.0  # Should have some score from uncertainty
+
+    def test_validate_parameter_bounds_valid_params(self):
+        """Test parameter bounds validation with valid parameters."""
+        generator = ExperimentGenerator()
+
+        # Valid pour over parameters
+        params = BrewingParameters(
+            water_temp=92.0,  # Within 80-100°C
+            coffee_dose=18.0,  # Within 10-30g
+            water_amount=300.0,  # Within 150-500g
+            grind_size=GrindSize.MEDIUM,
+            brew_time=240.0,  # Within 60-480s
+            brew_method=BrewMethod.POUR_OVER,
+            bloom_time=30.0,  # Within 15-60s
+        )
+
+        assert generator._validate_parameter_bounds(params) is True
+
+    def test_validate_parameter_bounds_invalid_params(self):
+        """Test parameter bounds validation with invalid parameters."""
+        generator = ExperimentGenerator()
+
+        # Invalid parameters (out of bounds)
+        params = BrewingParameters(
+            water_temp=110.0,  # Too high (>100°C)
+            coffee_dose=5.0,  # Too low (<10g)
+            water_amount=600.0,  # Too high (>500g)
+            grind_size=GrindSize.MEDIUM,
+            brew_time=30.0,  # Too low (<60s)
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        assert generator._validate_parameter_bounds(params) is False
+
+    def test_validate_parameter_bounds_pressure(self):
+        """Test parameter bounds validation for pressure parameters."""
+        generator = ExperimentGenerator()
+
+        # Valid espresso with pressure
+        valid_params = BrewingParameters(
+            water_temp=93.0,
+            coffee_dose=18.0,
+            water_amount=180.0,  # Valid water amount (>150g)
+            grind_size=GrindSize.FINE,
+            brew_time=90.0,  # Valid brew time (>60s)
+            brew_method=BrewMethod.ESPRESSO,
+            pressure=9.0,  # Valid pressure (1-15 bar)
+        )
+
+        assert generator._validate_parameter_bounds(valid_params) is True
+
+        # Invalid pressure
+        invalid_params = BrewingParameters(
+            water_temp=93.0,
+            coffee_dose=18.0,
+            water_amount=180.0,  # Valid water amount
+            grind_size=GrindSize.FINE,
+            brew_time=90.0,  # Valid brew time
+            brew_method=BrewMethod.ESPRESSO,
+            pressure=20.0,  # Too high (>15 bar)
+        )
+
+        assert generator._validate_parameter_bounds(invalid_params) is False
+
+    def test_clamp_parameters_out_of_bounds(self):
+        """Test parameter clamping for out-of-bounds values."""
+        generator = ExperimentGenerator()
+
+        # Out of bounds parameters
+        params = BrewingParameters(
+            water_temp=110.0,  # Too high
+            coffee_dose=5.0,  # Too low
+            water_amount=600.0,  # Too high
+            grind_size=GrindSize.MEDIUM,
+            brew_time=30.0,  # Too low
+            brew_method=BrewMethod.POUR_OVER,
+            bloom_time=70.0,  # Too high
+        )
+
+        clamped = generator._clamp_parameters(params)
+
+        assert clamped.water_temp == 100.0  # Clamped to max
+        assert clamped.coffee_dose == 10.0  # Clamped to min
+        assert clamped.water_amount == 500.0  # Clamped to max
+        assert clamped.brew_time == 60.0  # Clamped to min
+        assert clamped.bloom_time == 60.0  # Clamped to max
+        assert clamped.grind_size == GrindSize.MEDIUM  # Unchanged
+        assert clamped.brew_method == BrewMethod.POUR_OVER  # Unchanged
+
+    def test_clamp_parameters_within_bounds(self):
+        """Test parameter clamping for values already within bounds."""
+        generator = ExperimentGenerator()
+
+        # Valid parameters
+        params = BrewingParameters(
+            water_temp=92.0,
+            coffee_dose=18.0,
+            water_amount=300.0,
+            grind_size=GrindSize.MEDIUM,
+            brew_time=240.0,
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        clamped = generator._clamp_parameters(params)
+
+        # Should be unchanged
+        assert clamped.water_temp == 92.0
+        assert clamped.coffee_dose == 18.0
+        assert clamped.water_amount == 300.0
+        assert clamped.brew_time == 240.0
+
+    def test_generate_intelligent_experiments_basic(self):
+        """Test basic intelligent experiment generation."""
+        generator = ExperimentGenerator()
+
+        # Test with minimal configuration
+        experiments = generator.generate_intelligent_experiments(
+            num_experiments=5,
+            brew_method=BrewMethod.POUR_OVER,
+        )
+
+        assert isinstance(experiments, list)
+        assert len(experiments) <= 5
+
+        # All experiments should be valid brewing parameters
+        for exp in experiments:
+            assert isinstance(exp, BrewingParameters)
+            assert exp.brew_method == BrewMethod.POUR_OVER
+
+    def test_generate_intelligent_experiments_with_bounds_enforcement(self):
+        """Test intelligent experiment generation with bounds enforcement."""
+        generator = ExperimentGenerator()
+
+        experiments = generator.generate_intelligent_experiments(
+            num_experiments=10,
+            brew_method=BrewMethod.ESPRESSO,
+            enforce_bounds=True,
+        )
+
+        # All experiments should be within bounds
+        for exp in experiments:
+            assert generator._validate_parameter_bounds(exp)
+
+    def test_generate_intelligent_experiments_no_bounds_enforcement(self):
+        """Test intelligent experiment generation without bounds enforcement."""
+        generator = ExperimentGenerator()
+
+        experiments = generator.generate_intelligent_experiments(
+            num_experiments=5,
+            brew_method=BrewMethod.POUR_OVER,
+            enforce_bounds=False,
+        )
+
+        assert isinstance(experiments, list)
+        assert len(experiments) <= 5
+
+    def test_generate_intelligent_experiments_with_components(self):
+        """Test intelligent experiment generation with all components configured."""
+        # Create mock components
+        mock_estimator = MagicMock(spec=UncertaintyEstimator)
+        mock_estimator.estimate_uncertainty.return_value = {
+            "total_uncertainty": torch.tensor([1.5])
+        }
+
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.return_value = {
+            "input_ids": torch.tensor([[1, 2, 3]]),
+            "attention_mask": torch.tensor([[1, 1, 1]]),
+        }
+
+        from src.kdtree_explorer import SimpleKDTreeExplorer
+
+        kdtree_explorer = SimpleKDTreeExplorer()
+
+        generator = ExperimentGenerator(
+            uncertainty_estimator=mock_estimator,
+            kdtree_explorer=kdtree_explorer,
+        )
+
+        experiments = generator.generate_intelligent_experiments(
+            num_experiments=5,
+            brew_method=BrewMethod.POUR_OVER,
+            tokenizer=mock_tokenizer,
+            use_scoring=True,
+        )
+
+        assert isinstance(experiments, list)
+        assert len(experiments) <= 5
+
+        # Should use both uncertainty and exploration strategies
+        for exp in experiments:
+            assert isinstance(exp, BrewingParameters)
+
+    def test_generate_intelligent_experiments_zero_experiments(self):
+        """Test intelligent experiment generation with zero experiments requested."""
+        generator = ExperimentGenerator()
+
+        experiments = generator.generate_intelligent_experiments(num_experiments=0)
+        assert experiments == []
+
+    def test_generate_intelligent_experiments_with_existing_data(self):
+        """Test intelligent experiment generation with existing experiment data."""
+        from src.kdtree_explorer import SimpleKDTreeExplorer
+
+        kdtree_explorer = SimpleKDTreeExplorer()
+
+        generator = ExperimentGenerator(kdtree_explorer=kdtree_explorer)
+
+        existing_experiments = [
+            {
+                "water_temp": 90.0,
+                "coffee_dose": 18.0,
+                "water_amount": 300.0,
+                "grind_size": "medium",
+                "brew_time": 240.0,
+                "brew_method": "pour_over",
+            }
+        ]
+
+        experiments = generator.generate_intelligent_experiments(
+            num_experiments=3,
+            brew_method=BrewMethod.POUR_OVER,
+            existing_experiments=existing_experiments,
+        )
+
+        assert isinstance(experiments, list)
+        assert len(experiments) <= 3
 
 
 class TestExperimentGeneratorIntegration:
