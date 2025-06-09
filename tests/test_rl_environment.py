@@ -185,6 +185,391 @@ class TestRLEnvironmentSetup:
         ), f"Effective batch size should be 16, got {effective_batch_size}"
 
 
+class TestEarlyStopping:
+    """Test class for early stopping functionality."""
+
+    def test_early_stopping_configuration(self):
+        """Test early stopping configuration parameters."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Test default configuration
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+        )
+
+        assert rl_loop.config["early_stopping_patience"] == 5
+        assert rl_loop.config["early_stopping_threshold"] == 0.01
+        assert rl_loop.config["min_training_episodes"] == 100
+        assert rl_loop.best_eval_reward == float("-inf")
+        assert rl_loop.patience_counter == 0
+        assert rl_loop.early_stopped is False
+
+    def test_early_stopping_custom_configuration(self):
+        """Test early stopping with custom configuration."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Custom configuration
+        custom_config = {
+            "early_stopping_patience": 3,
+            "early_stopping_threshold": 0.05,
+            "min_training_episodes": 50,
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=custom_config,
+        )
+
+        assert rl_loop.config["early_stopping_patience"] == 3
+        assert rl_loop.config["early_stopping_threshold"] == 0.05
+        assert rl_loop.config["min_training_episodes"] == 50
+
+    def test_plateau_detection_no_improvement(self):
+        """Test plateau detection when there's no improvement."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Configuration with low patience for testing
+        config = {
+            "early_stopping_patience": 2,
+            "early_stopping_threshold": 0.01,
+            "min_training_episodes": 10,
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=config,
+        )
+
+        # Simulate training progress
+        rl_loop.episode_count = 20  # Above minimum
+
+        # Add evaluation history with no improvement
+        rl_loop.eval_history = [
+            {"avg_reward": 0.5, "episode": 10},
+            {"avg_reward": 0.49, "episode": 15},  # Slight decrease
+            {"avg_reward": 0.48, "episode": 20},  # Another decrease
+        ]
+        rl_loop.best_eval_reward = 0.5
+        rl_loop.patience_counter = 2  # At patience limit
+
+        # Should detect plateau
+        assert rl_loop.detect_performance_plateau() is True
+
+    def test_plateau_detection_with_improvement(self):
+        """Test plateau detection when there's significant improvement."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        config = {
+            "early_stopping_patience": 2,
+            "early_stopping_threshold": 0.01,
+            "min_training_episodes": 10,
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=config,
+        )
+
+        # Simulate training progress
+        rl_loop.episode_count = 20  # Above minimum
+
+        # Add evaluation history with improvement
+        rl_loop.eval_history = [
+            {"avg_reward": 0.5, "episode": 10},
+            {"avg_reward": 0.52, "episode": 15},  # Significant improvement
+        ]
+        rl_loop.best_eval_reward = 0.5
+        rl_loop.patience_counter = 1
+
+        # Should not detect plateau due to improvement
+        assert rl_loop.detect_performance_plateau() is False
+        assert rl_loop.patience_counter == 0  # Reset due to improvement
+        assert rl_loop.best_eval_reward == 0.52  # Updated best reward
+
+    def test_plateau_detection_before_minimum_episodes(self):
+        """Test that plateau detection doesn't trigger before minimum episodes."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        config = {
+            "early_stopping_patience": 1,
+            "early_stopping_threshold": 0.01,
+            "min_training_episodes": 100,
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=config,
+        )
+
+        # Simulate training progress below minimum
+        rl_loop.episode_count = 50  # Below minimum
+        rl_loop.eval_history = [{"avg_reward": 0.5, "episode": 50}]
+        rl_loop.patience_counter = 2  # Above patience limit
+
+        # Should not detect plateau due to minimum episodes not reached
+        assert rl_loop.detect_performance_plateau() is False
+
+    @patch("src.train_rl.Path")
+    def test_best_model_saving(self, mock_path):
+        """Test best model saving functionality."""
+        from unittest.mock import MagicMock, mock_open
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Mock file operations
+        mock_path_instance = MagicMock()
+        mock_path.return_value = mock_path_instance
+        mock_path_instance.mkdir = MagicMock()
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+        )
+
+        # Test saving best model
+        with patch("builtins.open", mock_open()) as mock_file:
+            with patch("json.dump") as mock_json_dump:
+                rl_loop.save_best_model(episode=100, eval_reward=0.75)
+
+        # Verify model and tokenizer save methods were called
+        mock_model.save_pretrained.assert_called_once()
+        mock_tokenizer.save_pretrained.assert_called_once()
+
+        # Verify JSON file was written
+        mock_file.assert_called()
+        mock_json_dump.assert_called_once()
+
+    def test_disabled_early_stopping(self):
+        """Test that early stopping can be disabled."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Configuration with disabled early stopping
+        config = {
+            "early_stopping_patience": float("inf"),
+            "early_stopping_threshold": 0.0,
+            "min_training_episodes": float("inf"),
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=config,
+        )
+
+        # Simulate conditions that would normally trigger early stopping
+        rl_loop.episode_count = 1000
+        rl_loop.eval_history = [{"avg_reward": 0.5, "episode": 1000}]
+        rl_loop.patience_counter = 100
+
+        # Should not detect plateau when disabled
+        assert rl_loop.detect_performance_plateau() is False
+
+    @patch("src.train_rl.RLTrainingLoop.evaluate")
+    @patch("src.train_rl.RLTrainingLoop.train_episode")
+    def test_early_stopping_integration(self, mock_train_episode, mock_evaluate):
+        """Integration test for early stopping during actual training."""
+        from unittest.mock import MagicMock
+
+        from src.reward_calculator import RewardCalculator
+        from src.train_rl import RLTrainingLoop, create_dummy_rl_dataset
+
+        # Create mock objects
+        mock_model = MagicMock()
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.pad_token_id = 0
+        mock_tokenizer.eos_token_id = 1
+        mock_ppo_trainer = MagicMock()
+        reward_calculator = RewardCalculator()
+
+        # Configuration for quick early stopping
+        config = {
+            "max_episodes": 50,
+            "eval_freq": 5,
+            "early_stopping_patience": 2,
+            "early_stopping_threshold": 0.01,
+            "min_training_episodes": 10,
+            "log_freq": 5,
+            "save_freq": 20,
+        }
+
+        rl_loop = RLTrainingLoop(
+            model=mock_model,
+            ref_model=mock_model,
+            tokenizer=mock_tokenizer,
+            ppo_trainer=mock_ppo_trainer,
+            reward_calculator=reward_calculator,
+            config=config,
+        )
+
+        # Mock train_episode to return consistent rewards and update stats
+        def mock_train_episode_side_effect(episode_data):
+            episode_stats = {
+                "reward": 0.5,
+                "kl_divergence": 0.0,
+                "policy_loss": 0.0,
+                "value_loss": 0.0,
+            }
+            # Manually update training stats since we're mocking the method
+            rl_loop.training_stats["rewards"].append(episode_stats["reward"])
+            rl_loop.training_stats["kl_divergences"].append(
+                episode_stats["kl_divergence"]
+            )
+            rl_loop.training_stats["policy_losses"].append(episode_stats["policy_loss"])
+            rl_loop.training_stats["value_losses"].append(episode_stats["value_loss"])
+            return episode_stats
+
+        mock_train_episode.side_effect = mock_train_episode_side_effect
+
+        # Mock evaluate to return plateauing rewards and update eval history
+        def mock_evaluate_side_effect(dataset, num_eval_episodes=10):
+            eval_count = len(rl_loop.eval_history)
+            rewards = [0.6, 0.59, 0.58]  # Plateauing rewards
+
+            if eval_count < len(rewards):
+                eval_result = {
+                    "episode": rl_loop.episode_count,
+                    "avg_reward": rewards[eval_count],
+                    "num_episodes": num_eval_episodes,
+                    "timestamp": float(eval_count + 1),
+                }
+
+                # Manually update eval history and best model tracking
+                rl_loop.eval_history.append(eval_result)
+                if eval_result["avg_reward"] > rl_loop.best_eval_reward:
+                    rl_loop.best_eval_reward = eval_result["avg_reward"]
+                    rl_loop.best_model_episode = rl_loop.episode_count
+
+                return eval_result
+            else:
+                # Fallback for unexpected calls
+                return {
+                    "episode": rl_loop.episode_count,
+                    "avg_reward": 0.5,
+                    "num_episodes": num_eval_episodes,
+                    "timestamp": 999.0,
+                }
+
+        mock_evaluate.side_effect = mock_evaluate_side_effect
+
+        # Create dummy dataset
+        dataset = create_dummy_rl_dataset()
+
+        # Run training
+        results = rl_loop.train(dataset, num_episodes=50)
+
+        # Verify early stopping occurred
+        assert results["early_stopped"] is True
+        assert (
+            results["total_episodes"] == 16
+        )  # Should stop at episode 15 (0-indexed), so 16 total
+        assert results["best_eval_reward"] == 0.6  # Best reward from first evaluation
+        assert len(rl_loop.eval_history) == 3  # Three evaluations before stopping
+
+        # Verify evaluate was called the expected number of times
+        assert mock_evaluate.call_count == 3
+
+
 if __name__ == "__main__":
     # Run basic tests when executed directly
     test_instance = TestRLEnvironmentSetup()

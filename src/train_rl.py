@@ -68,6 +68,10 @@ class RLTrainingLoop:
             "save_freq": 100,
             "eval_freq": 50,
             "log_freq": 10,
+            # Early stopping configuration
+            "early_stopping_patience": 5,  # Number of evaluations without improvement
+            "early_stopping_threshold": 0.01,  # Minimum improvement required
+            "min_training_episodes": 100,  # Minimum episodes before early stopping
         }
 
         self.config = {**default_config, **(config or {})}
@@ -78,6 +82,13 @@ class RLTrainingLoop:
             "policy_losses": [],
             "value_losses": [],
         }
+
+        # Early stopping state
+        self.eval_history = []  # Track evaluation results
+        self.best_eval_reward = float("-inf")
+        self.best_model_episode = 0
+        self.patience_counter = 0
+        self.early_stopped = False
 
     def format_coffee_prompt(self, coffee_data: Dict[str, Any]) -> str:
         """Format coffee brewing data into a prompt for the model.
@@ -178,6 +189,103 @@ Recommendation:"""
             data_reliability=ground_truth.get("data_reliability"),
         )
 
+    def detect_performance_plateau(self) -> bool:
+        """Detect if training performance has plateaued.
+
+        Analyzes recent evaluation history to determine if performance
+        has stopped improving significantly.
+
+        Returns:
+            True if performance has plateaued, False otherwise
+        """
+        # Need at least one evaluation to check for plateau
+        if not self.eval_history:
+            return False
+
+        # Don't trigger early stopping before minimum training episodes
+        if self.episode_count < self.config["min_training_episodes"]:
+            return False
+
+        current_reward = self.eval_history[-1]["avg_reward"]
+
+        # Check if current performance is better than best seen so far
+        improvement = current_reward - self.best_eval_reward
+
+        if improvement > self.config["early_stopping_threshold"]:
+            # Significant improvement found
+            self.best_eval_reward = current_reward
+            self.best_model_episode = self.episode_count
+            self.patience_counter = 0
+            return False
+        else:
+            # No significant improvement
+            self.patience_counter += 1
+
+            # Check if we've exceeded patience
+            if self.patience_counter >= self.config["early_stopping_patience"]:
+                print(
+                    f"🛑 Early stopping triggered after {self.patience_counter} evaluations without improvement"
+                )
+                print(
+                    f"📊 Best reward: {self.best_eval_reward:.4f} at episode {self.best_model_episode}"
+                )
+                return True
+
+        return False
+
+    def save_best_model(self, episode: int, eval_reward: float) -> None:
+        """Save the best model checkpoint when performance improves.
+
+        Args:
+            episode: Current episode number
+            eval_reward: Current evaluation reward
+        """
+        checkpoint_dir = Path("./checkpoints/rl_training")
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+        best_model_path = checkpoint_dir / "best_model"
+
+        # Save model
+        self.model.save_pretrained(best_model_path)
+        self.tokenizer.save_pretrained(best_model_path)
+
+        # Save training stats and metadata
+        best_model_info = {
+            "episode": episode,
+            "eval_reward": eval_reward,
+            "training_stats": self.training_stats,
+            "timestamp": time.time(),
+        }
+
+        info_path = best_model_path / "best_model_info.json"
+        with open(info_path, "w") as f:
+            json.dump(best_model_info, f, indent=2)
+
+        print(f"💎 Best model saved: {best_model_path} (reward: {eval_reward:.4f})")
+
+    def _restore_best_model(self) -> None:
+        """Restore the best model as the current model when early stopping occurs."""
+        best_model_path = Path("./checkpoints/rl_training/best_model")
+
+        if best_model_path.exists():
+            print(f"🔄 Restoring best model from episode {self.best_model_episode}")
+
+            # Load the best model state
+            try:
+                from transformers import AutoModelForCausalLM
+
+                best_model = AutoModelForCausalLM.from_pretrained(best_model_path)
+
+                # Copy the best model's state to current model
+                self.model.load_state_dict(best_model.state_dict())
+                print("✅ Best model restored successfully")
+
+            except Exception as e:
+                print(f"⚠️ Failed to restore best model: {e}")
+                print("Continuing with current model state")
+        else:
+            print("⚠️ Best model checkpoint not found, using current model state")
+
     def generate_response(self, prompt: str) -> Tuple[str, torch.Tensor]:
         """Generate response from the model for a given prompt.
 
@@ -267,7 +375,7 @@ Recommendation:"""
     def train(
         self, dataset: Dataset, num_episodes: Optional[int] = None
     ) -> Dict[str, Any]:
-        """Main training loop.
+        """Main training loop with early stopping support.
 
         Args:
             dataset: Training dataset
@@ -280,6 +388,11 @@ Recommendation:"""
             num_episodes = self.config["max_episodes"]
 
         print(f"🚀 Starting RL training for {num_episodes} episodes...")
+        print(
+            f"📊 Early stopping: patience={self.config['early_stopping_patience']}, "
+            f"threshold={self.config['early_stopping_threshold']}, "
+            f"min_episodes={self.config['min_training_episodes']}"
+        )
 
         start_time = time.time()
 
@@ -295,32 +408,62 @@ Recommendation:"""
 
             # Logging
             if episode % self.config["log_freq"] == 0:
-                avg_reward = sum(self.training_stats["rewards"][-10:]) / min(
-                    10, len(self.training_stats["rewards"])
+                recent_rewards = self.training_stats["rewards"][-10:]
+                avg_reward = (
+                    sum(recent_rewards) / len(recent_rewards) if recent_rewards else 0.0
                 )
+                patience_info = f", Patience: {self.patience_counter}/{self.config['early_stopping_patience']}"
                 print(
                     f"Episode {episode}: Reward={episode_stats['reward']:.4f}, "
                     f"Avg Reward (last 10)={avg_reward:.4f}, "
                     f"KL Div={episode_stats['kl_divergence']:.6f}"
+                    f"{patience_info}"
                 )
 
             # Save checkpoint
             if episode % self.config["save_freq"] == 0 and episode > 0:
                 self.save_checkpoint(episode)
 
-            # Evaluation
+                # Evaluation and early stopping check
             if episode % self.config["eval_freq"] == 0 and episode > 0:
                 self.evaluate(dataset)
 
+                # Check for early stopping
+                if self.detect_performance_plateau():
+                    self.early_stopped = True
+                    print(f"🛑 Early stopping at episode {episode}")
+                    break
+
         training_time = time.time() - start_time
 
-        print(f"✅ Training completed in {training_time:.2f} seconds")
+        # Final model save and summary
+        if self.early_stopped:
+            print(
+                f"✅ Training stopped early after {self.episode_count} episodes ({training_time:.2f} seconds)"
+            )
+            print(
+                f"💎 Best model saved at episode {self.best_model_episode} with reward {self.best_eval_reward:.4f}"
+            )
+        else:
+            print(f"✅ Training completed in {training_time:.2f} seconds")
+
+        # Ensure best model is available as final model if early stopped
+        if self.early_stopped and self.best_model_episode < self.episode_count:
+            self._restore_best_model()
 
         return {
-            "total_episodes": num_episodes,
+            "total_episodes": self.episode_count,
             "training_time": training_time,
-            "final_avg_reward": sum(self.training_stats["rewards"][-10:])
-            / min(10, len(self.training_stats["rewards"])),
+            "early_stopped": self.early_stopped,
+            "best_episode": self.best_model_episode,
+            "best_eval_reward": self.best_eval_reward,
+            "final_avg_reward": (
+                sum(self.training_stats["rewards"][-10:])
+                / len(self.training_stats["rewards"][-10:])
+                if self.training_stats["rewards"]
+                else 0.0
+            ),
+            "eval_history": self.eval_history,
             "stats": self.training_stats,
         }
 
@@ -357,10 +500,20 @@ Recommendation:"""
         avg_eval_reward = sum(eval_rewards) / len(eval_rewards)
         print(f"📊 Evaluation - Average Reward: {avg_eval_reward:.4f}")
 
-        return {
+        # Store evaluation result in history
+        eval_result = {
+            "episode": self.episode_count,
             "avg_reward": avg_eval_reward,
             "num_episodes": len(eval_rewards),
+            "timestamp": time.time(),
         }
+        self.eval_history.append(eval_result)
+
+        # Save best model if this is the best performance so far
+        if avg_eval_reward > self.best_eval_reward:
+            self.save_best_model(self.episode_count, avg_eval_reward)
+
+        return eval_result
 
     def save_checkpoint(self, episode: int) -> None:
         """Save model checkpoint.
@@ -450,6 +603,31 @@ def parse_arguments() -> argparse.Namespace:
         help="Log training metrics every N episodes",
     )
 
+    # Early stopping arguments
+    parser.add_argument(
+        "--early-stopping-patience",
+        type=int,
+        default=5,
+        help="Number of evaluations without improvement before early stopping",
+    )
+    parser.add_argument(
+        "--early-stopping-threshold",
+        type=float,
+        default=0.01,
+        help="Minimum improvement required to reset patience counter",
+    )
+    parser.add_argument(
+        "--min-training-episodes",
+        type=int,
+        default=100,
+        help="Minimum episodes before early stopping can trigger",
+    )
+    parser.add_argument(
+        "--disable-early-stopping",
+        action="store_true",
+        help="Disable early stopping mechanism",
+    )
+
     # Data arguments
     parser.add_argument(
         "--dataset-path",
@@ -518,6 +696,25 @@ def main() -> int:
             "eval_freq": args.eval_freq,
             "log_freq": args.log_freq,
         }
+
+        # Add early stopping configuration if not disabled
+        if not args.disable_early_stopping:
+            training_config.update(
+                {
+                    "early_stopping_patience": args.early_stopping_patience,
+                    "early_stopping_threshold": args.early_stopping_threshold,
+                    "min_training_episodes": args.min_training_episodes,
+                }
+            )
+        else:
+            # Disable early stopping by setting very high patience
+            training_config.update(
+                {
+                    "early_stopping_patience": float("inf"),
+                    "early_stopping_threshold": 0.0,
+                    "min_training_episodes": float("inf"),
+                }
+            )
 
         # Create training loop
         rl_trainer = RLTrainingLoop(
