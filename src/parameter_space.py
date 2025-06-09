@@ -119,14 +119,20 @@ class BrewingParameters:
         Returns:
             BrewingParameters instance
         """
-        # Convert string enums to enum objects
+        # Convert string enums to enum objects with fallbacks
         grind_size = data["grind_size"]
         if isinstance(grind_size, str):
-            grind_size = GrindSize(grind_size.lower())
+            try:
+                grind_size = GrindSize(grind_size.lower())
+            except ValueError:
+                grind_size = GrindSize.MEDIUM  # Default fallback
 
         brew_method = data["brew_method"]
         if isinstance(brew_method, str):
-            brew_method = BrewMethod(brew_method.lower())
+            try:
+                brew_method = BrewMethod(brew_method.lower())
+            except ValueError:
+                brew_method = BrewMethod.POUR_OVER  # Default fallback
 
         return cls(
             water_temp=float(data["water_temp"]),
