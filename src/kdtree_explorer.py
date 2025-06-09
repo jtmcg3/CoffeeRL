@@ -131,11 +131,20 @@ class SimpleKDTreeExplorer:
         """
         suggestions = []
 
+        # Determine the expected vector dimension from existing points
+        expected_dim = 6  # Default to core dimensions
+        if self.points:
+            # Get dimension from first point
+            first_vector = normalize_parameters(
+                self.points[0].parameters, self.parameter_ranges
+            )
+            expected_dim = len(first_vector)
+
         # Generate random candidates and pick the sparsest ones
         candidates = []
         for _ in range(num_suggestions * 10):  # Generate more candidates than needed
-            # Random parameters in normalized space
-            random_vector = np.random.random(6)  # 6 core dimensions
+            # Random parameters in normalized space with correct dimensions
+            random_vector = np.random.random(expected_dim)
             params = denormalize_parameters(
                 random_vector, self.parameter_ranges, BrewMethod.POUR_OVER
             )
