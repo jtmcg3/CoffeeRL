@@ -7,9 +7,8 @@ management with proper state transitions and error handling.
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from .database import (
@@ -230,7 +229,7 @@ class ExperimentTracker:
                 session,
                 experiment_id,
                 user_id,
-                f"status_change",
+                "status_change",
                 {
                     "from_status": experiment.status,
                     "to_status": to_status,
@@ -404,7 +403,10 @@ class ExperimentTracker:
                 result.experiment_id,
                 user_id,
                 "update_result",
-                {"result_id": result_id, "fields_updated": list(updates.keys())},
+                {
+                    "result_id": result_id,
+                    "fields_updated": list(updates.keys()),
+                },
             )
 
             return result
@@ -412,7 +414,9 @@ class ExperimentTracker:
     # Utility Methods
 
     def get_experiment_summary(self, experiment_id: int) -> Optional[Dict[str, Any]]:
-        """Get a comprehensive summary of an experiment including interactions and results."""
+        """
+        Get a comprehensive summary of an experiment including interactions and results.
+        """
         with self.db_manager.get_session_context() as session:
             experiment = session.query(Experiment).filter_by(id=experiment_id).first()
 

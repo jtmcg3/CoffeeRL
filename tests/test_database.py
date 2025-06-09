@@ -2,8 +2,7 @@
 Tests for database models and functionality.
 """
 
-import json
-from datetime import datetime, timedelta
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest

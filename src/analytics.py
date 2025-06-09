@@ -7,10 +7,9 @@ analysis for the coffee brewing experiment system.
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy import and_, case, func
-from sqlalchemy.orm import Session
 
 from .database import DatabaseManager, Experiment, ExperimentResult, UserInteraction
 

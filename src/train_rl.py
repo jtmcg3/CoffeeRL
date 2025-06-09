@@ -101,10 +101,10 @@ class RLTrainingLoop:
         """
         prompt = f"""Coffee Brewing Recommendation:
 
-Bean Type: {coffee_data.get('bean_type', 'Unknown')}
-Grind Size: {coffee_data.get('grind_size', 'Medium')}
-Water Temperature: {coffee_data.get('water_temp', 93)}°C
-Brewing Method: {coffee_data.get('brew_method', 'Pour Over')}
+Bean Type: {coffee_data.get("bean_type", "Unknown")}
+Grind Size: {coffee_data.get("grind_size", "Medium")}
+Water Temperature: {coffee_data.get("water_temp", 93)}°C
+Brewing Method: {coffee_data.get("brew_method", "Pour Over")}
 
 Please provide brewing recommendations including:
 1. Extraction yield prediction (%)

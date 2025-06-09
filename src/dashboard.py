@@ -7,23 +7,21 @@ prediction accuracy, and brewing method performance.
 
 import os
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Optional
 
 import dash
-import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 from dash import Input, Output, callback, dcc, html
 
-from .analytics import Analytics, BrewingMethodStats, ExperimentStats
-from .database import get_database_manager
+from .analytics import Analytics
+from .database import DatabaseManager
 
 # Initialize the Dash app
 app = dash.Dash(__name__, title="CoffeRL Analytics Dashboard")
 
 # Get database manager
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///cofferl.db")
-db_manager = get_database_manager(DATABASE_URL)
+db_manager = DatabaseManager(DATABASE_URL)
 analytics = Analytics(db_manager)
 
 # Dashboard layout
@@ -240,7 +238,6 @@ def update_brewing_method_chart(days_back: Optional[int], n_intervals: int):
 
         methods = [stat.method for stat in performance_stats]
         completion_rates = [stat.completion_rate for stat in performance_stats]
-        total_experiments = [stat.total_experiments for stat in performance_stats]
         avg_taste_scores = [stat.average_taste_score or 0 for stat in performance_stats]
 
         fig = go.Figure()
@@ -328,8 +325,9 @@ def update_prediction_accuracy_chart(
         )
 
         # Add perfect prediction line
-        min_val, max_val = min(min(predicted), min(actual)), max(
-            max(predicted), max(actual)
+        min_val, max_val = (
+            min(min(predicted), min(actual)),
+            max(max(predicted), max(actual)),
         )
         fig.add_trace(
             go.Scatter(

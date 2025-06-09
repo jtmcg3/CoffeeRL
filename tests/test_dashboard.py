@@ -5,8 +5,7 @@ Tests dashboard components, callbacks, and data visualization functionality.
 """
 
 import os
-from datetime import datetime, timedelta
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -239,7 +238,7 @@ class TestDashboardIntegration:
 
     def test_database_connection(self):
         """Test that dashboard connects to database properly."""
-        from src.dashboard import analytics, db_manager
+        from src.dashboard import db_manager
 
         assert db_manager is not None
         assert analytics is not None
@@ -268,21 +267,21 @@ class TestDashboardIntegration:
 class TestDashboardUtilities:
     """Test dashboard utility functions."""
 
-    def test_run_dashboard_function(self):
+    @patch("src.dashboard.app.run")
+    def test_run_dashboard_function(self, mock_run):
         """Test the run_dashboard function."""
         from src.dashboard import run_dashboard
 
-        with patch.object(app, "run") as mock_run:
-            run_dashboard(host="0.0.0.0", port=8080, debug=True)
-            mock_run.assert_called_once_with(host="0.0.0.0", port=8080, debug=True)
+        run_dashboard(host="0.0.0.0", port=8080, debug=True)
+        mock_run.assert_called_once_with(host="0.0.0.0", port=8080, debug=True)
 
-    def test_run_dashboard_defaults(self):
+    @patch("src.dashboard.app.run")
+    def test_run_dashboard_defaults(self, mock_run):
         """Test run_dashboard with default parameters."""
         from src.dashboard import run_dashboard
 
-        with patch.object(app, "run") as mock_run:
-            run_dashboard()
-            mock_run.assert_called_once_with(host="127.0.0.1", port=8050, debug=False)
+        run_dashboard()
+        mock_run.assert_called_once_with(host="127.0.0.1", port=8050, debug=False)
 
 
 class TestDashboardErrorHandling:
@@ -332,6 +331,8 @@ class TestDashboardErrorHandling:
                 most_popular_method="V60",
             )
             mock.calculate_completion_rate.return_value = 60.0
+            mock.calculate_average_completion_time.return_value = 1.5
+            mock.calculate_prediction_accuracy.return_value = 0.75
             yield mock
 
     def test_invalid_filter_values(self, mock_analytics_simple):

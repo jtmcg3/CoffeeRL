@@ -102,3 +102,32 @@ python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
+
+# ruff configuration
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = [
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".tox",
+    ".venv",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+]
+ignore = [
+    "E203",  # whitespace before ':'
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]

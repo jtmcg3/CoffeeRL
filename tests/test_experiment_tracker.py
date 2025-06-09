@@ -2,20 +2,13 @@
 Tests for experiment tracking system.
 """
 
-from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.database import (
-    Base,
-    DatabaseManager,
-    Experiment,
-    ExperimentResult,
-    UserInteraction,
-)
+from src.database import Base, DatabaseManager, UserInteraction
 from src.experiment_tracker import ExperimentTracker
 
 

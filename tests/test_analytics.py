@@ -6,13 +6,13 @@ correlation analysis, and performance statistics.
 """
 
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.analytics import Analytics, BrewingMethodStats, ExperimentStats
+from src.analytics import Analytics, ExperimentStats
 from src.database import (
     Base,
     DatabaseManager,

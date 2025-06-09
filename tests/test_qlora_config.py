@@ -186,7 +186,6 @@ class TestCloudDetection:
             patch("os.path.exists", return_value=False),
             patch("psutil.virtual_memory") as mock_psutil,
         ):
-
             mock_memory = Mock()
             mock_memory.total = 8 * 1024**3  # 8GB
             mock_psutil.return_value = mock_memory
@@ -200,5 +199,4 @@ class TestCloudDetection:
             patch("os.path.exists", return_value=False),
             patch("psutil.virtual_memory", side_effect=ImportError),
         ):
-
             assert is_cloud_environment() is False

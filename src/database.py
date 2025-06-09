@@ -5,7 +5,6 @@ This module provides SQLAlchemy models for tracking coffee brewing experiments,
 user interactions, and results. Uses PostgreSQL for efficient data storage.
 """
 
-import json
 from datetime import datetime
 from typing import Any, Dict, Optional
 

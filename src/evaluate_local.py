@@ -313,13 +313,13 @@ def print_evaluation_summary(results: Dict[str, Any]) -> None:
     print()
     print("🎯 METRICS:")
     print(
-        f"  Grind Change Accuracy:  {metrics['grind_accuracy']:.3f} ({metrics['grind_accuracy']*100:.1f}%)"
+        f"  Grind Change Accuracy:  {metrics['grind_accuracy']:.3f} ({metrics['grind_accuracy'] * 100:.1f}%)"
     )
     print(
-        f"  Extraction Accuracy:    {metrics['extraction_accuracy']:.3f} ({metrics['extraction_accuracy']*100:.1f}%)"
+        f"  Extraction Accuracy:    {metrics['extraction_accuracy']:.3f} ({metrics['extraction_accuracy'] * 100:.1f}%)"
     )
     print(
-        f"  Average Accuracy:       {metrics['average_accuracy']:.3f} ({metrics['average_accuracy']*100:.1f}%)"
+        f"  Average Accuracy:       {metrics['average_accuracy']:.3f} ({metrics['average_accuracy'] * 100:.1f}%)"
     )
     print("=" * 50)
 
