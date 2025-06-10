@@ -248,8 +248,12 @@ def submit_experiment_result(
         if brew_time_actual < 30 or brew_time_actual > 600:
             return "❌ Error: Brew time must be between 30 and 600 seconds."
 
-        # Initialize experiment tracker
-        tracker = ExperimentTracker()
+        # Initialize experiment tracker with SQLite
+        from src.database import DatabaseManager
+
+        sqlite_url = "sqlite:///cofferl.db"
+        db_manager = DatabaseManager(sqlite_url)
+        tracker = ExperimentTracker(db_manager)
 
         # Convert temperature consistency to a score
         temp_score_map = {
@@ -411,7 +415,12 @@ def get_experiment_history(user_id: str, status_filter: str = "All") -> tuple:
         if not user_id or user_id.strip() == "":
             return [], "Please enter a User ID to view experiment history."
 
-        tracker = ExperimentTracker()
+        # Initialize experiment tracker with SQLite
+        from src.database import DatabaseManager
+
+        sqlite_url = "sqlite:///cofferl.db"
+        db_manager = DatabaseManager(sqlite_url)
+        tracker = ExperimentTracker(db_manager)
 
         # Get experiments for the user
         if status_filter == "All":
@@ -486,7 +495,13 @@ def get_user_stats(user_id: str) -> str:
         if not user_id or user_id.strip() == "":
             return "Please enter a User ID to view statistics."
 
-        tracker = ExperimentTracker()
+        # Initialize experiment tracker with SQLite
+        from src.database import DatabaseManager
+
+        sqlite_url = "sqlite:///cofferl.db"
+        db_manager = DatabaseManager(sqlite_url)
+        tracker = ExperimentTracker(db_manager)
+
         stats = tracker.get_user_experiment_stats(user_id.strip())
 
         if stats["total_experiments"] == 0:
@@ -503,11 +518,11 @@ def get_user_stats(user_id: str) -> str:
 ### 📊 User Statistics for '{user_id}'
 
 **Overall Performance:**
-- Total Experiments: {stats['total_experiments']}
-- Completed Experiments: {stats['completed_experiments']}
+- Total Experiments: {stats["total_experiments"]}
+- Completed Experiments: {stats["completed_experiments"]}
 - Completion Rate: {completion_rate_text}
 - Average Taste Score: {avg_score_text}
-- Total Results Recorded: {stats['total_results']}
+- Total Results Recorded: {stats["total_results"]}
 
 **Status Distribution:**
 """

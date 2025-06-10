@@ -54,7 +54,7 @@ def main():
         print("\n📈 Summary:")
         print(f"  • Raw examples: {len(examples)}")
         print(f"  • Valid examples: {len(valid_examples)}")
-        print(f"  • Success rate: {len(valid_examples)/len(examples)*100:.1f}%")
+        print(f"  • Success rate: {len(valid_examples) / len(examples) * 100:.1f}%")
 
         # Show sample output
         if valid_examples:

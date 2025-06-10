@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 try:
     from src.experiment_generator import ExperimentGenerator
     from src.kdtree_explorer import SimpleKDTreeExplorer
-    from src.parameter_space import BrewingParameters, BrewMethod, GrindSize
+    from src.parameter_space import BrewingParameters, BrewMethod
 except ImportError as e:
     print(f"Import error: {e}")
     print("Make sure you're running from the project root directory")
@@ -19,11 +19,11 @@ except ImportError as e:
 
 def print_params(params: BrewingParameters, index: int = None):
     """Print brewing parameters nicely."""
-    prefix = f"{index+1}. " if index is not None else ""
+    prefix = f"{index + 1}. " if index is not None else ""
     print(
         f"  {prefix}{params.brew_method.value}: {params.water_temp}°C, "
         f"{params.coffee_dose}g coffee, {params.water_amount}g water, "
-        f"{params.grind_size.value} grind, {params.brew_time/60:.1f}min"
+        f"{params.grind_size.value} grind, {params.brew_time / 60:.1f}min"
     )
     if params.bloom_time:
         print(f"     Bloom: {params.bloom_time}s")

@@ -13,7 +13,7 @@ import sys
 # Add src to path so we can import our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
-from src.dashboard import run_dashboard
+from src.dashboard import run_dashboard  # noqa: E402
 
 
 def main():
@@ -29,7 +29,7 @@ def main():
 
     args = parser.parse_args()
 
-    print(f"Starting CoffeRL Analytics Dashboard...")
+    print("Starting CoffeRL Analytics Dashboard...")
     print(f"Host: {args.host}")
     print(f"Port: {args.port}")
     print(f"Debug: {args.debug}")
