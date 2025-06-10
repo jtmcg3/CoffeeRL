@@ -232,6 +232,7 @@ runs/
 logs/
 tensorboard_logs/
 experiments/
+cofferl.db
 
 # Hugging Face cache
 .cache/
