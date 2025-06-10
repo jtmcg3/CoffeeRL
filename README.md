@@ -1,11 +1,17 @@
 # CoffeeRL-Lite
-<img src="docs/static/coffeerl_logo_compressed.jpg" width="200" align="center">
+
+<div align="center">
+  <img src="docs/static/coffeerl_logo_compressed.jpg" width="200">
+</div>
+
 A lightweight reinforcement learning framework for coffee optimization using transformer models and PEFT (Parameter-Efficient Fine-Tuning). Train AI models to optimize coffee brewing parameters through reinforcement learning and compare their performance.
 
 ## Interface Preview
 
-<img src="docs/static/chatbot_compressed.jpg" width="200" style="display: inline-block"/> <img src="docs/static/experiment_lab_compressed.jpg" width="200" style="display: inline-block"/>
-
+<div align="center">
+  <img src="docs/static/chatbot_compressed.jpg" width="300" alt="Chatbot Interface">
+  <img src="docs/static/experiment_lab_compressed.jpg" width="300" alt="Experiment Lab Interface">
+</div>
 
 *Preview of the Gradio web interface and Experiment Lab for fine-tuning coffee parameters*
 
