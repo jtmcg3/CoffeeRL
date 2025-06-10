@@ -32,6 +32,12 @@ def create_sample_experiments():
         {
             "user_id": "demo_user_001",
             "brew_method": "V60",
+            "coffee_dose": 18.0,
+            "water_amount": 300.0,
+            "water_temperature": 92.0,
+            "grind_size": "medium-fine",
+            "brew_time": 240,
+            "bloom_time": 30,
             "parameters_json": {
                 "coffee_origin": "Ethiopian Yirgacheffe",
                 "roast_level": "Light",
@@ -41,12 +47,16 @@ def create_sample_experiments():
                 "reward_points": 50,
                 "rationale": "Light roast Ethiopian beans showcase bright acidity and floral notes when brewed with precise temperature control.",
             },
-            "description": "Explore the bright, floral notes of Ethiopian Yirgacheffe with precise V60 brewing. Focus on temperature control and even extraction.",
-            "status": "pending",
         },
         {
             "user_id": "demo_user_001",
             "brew_method": "V60",
+            "coffee_dose": 20.0,
+            "water_amount": 320.0,
+            "water_temperature": 90.0,
+            "grind_size": "medium",
+            "brew_time": 210,
+            "bloom_time": 45,
             "parameters_json": {
                 "coffee_origin": "Colombian Geisha",
                 "roast_level": "Medium-Light",
@@ -56,12 +66,16 @@ def create_sample_experiments():
                 "reward_points": 75,
                 "rationale": "Geisha varieties require careful extraction to highlight their unique jasmine and bergamot characteristics.",
             },
-            "description": "Master the delicate extraction of Colombian Geisha. Experiment with grind size and pour technique to unlock complex flavors.",
-            "status": "pending",
         },
         {
             "user_id": "demo_user_001",
             "brew_method": "V60",
+            "coffee_dose": 22.0,
+            "water_amount": 350.0,
+            "water_temperature": 94.0,
+            "grind_size": "medium-coarse",
+            "brew_time": 300,
+            "bloom_time": 60,
             "parameters_json": {
                 "coffee_origin": "Jamaican Blue Mountain",
                 "roast_level": "Medium",
@@ -71,8 +85,6 @@ def create_sample_experiments():
                 "reward_points": 100,
                 "rationale": "Blue Mountain coffee's subtle complexity demands expert-level brewing precision and attention to detail.",
             },
-            "description": "Challenge yourself with the legendary Jamaican Blue Mountain. Perfect your technique to capture its renowned balance and smoothness.",
-            "status": "pending",
         },
     ]
 
@@ -88,9 +100,13 @@ def create_sample_experiments():
             experiment = tracker.create_experiment(
                 user_id=exp_data["user_id"],
                 brew_method=exp_data["brew_method"],
+                coffee_dose=exp_data["coffee_dose"],
+                water_amount=exp_data["water_amount"],
+                water_temperature=exp_data["water_temperature"],
+                grind_size=exp_data["grind_size"],
+                brew_time=exp_data["brew_time"],
+                bloom_time=exp_data.get("bloom_time"),
                 parameters_json=exp_data["parameters_json"],
-                description=exp_data["description"],
-                status=exp_data["status"],
             )
 
             if experiment:
@@ -99,7 +115,9 @@ def create_sample_experiments():
                     f"   ✅ Created experiment {experiment.id}: {exp_data['parameters_json']['coffee_origin']}"
                 )
             else:
-                print(f"   ❌ Failed to create experiment: {exp_data['description']}")
+                print(
+                    f"   ❌ Failed to create experiment: {exp_data['parameters_json']['coffee_origin']}"
+                )
 
         except Exception as e:
             print(f"   ❌ Error creating experiment: {e}")
