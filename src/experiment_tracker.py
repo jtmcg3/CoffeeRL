@@ -40,6 +40,10 @@ class ExperimentTracker:
         brew_time: int,
         pressure: Optional[float] = None,
         bloom_time: Optional[int] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        difficulty: Optional[str] = None,
+        scientific_rationale: Optional[str] = None,
         parameters_json: Optional[Dict[str, Any]] = None,
         predicted_score: Optional[float] = None,
         uncertainty_score: Optional[float] = None,
@@ -56,6 +60,10 @@ class ExperimentTracker:
                 brew_time=brew_time,
                 pressure=pressure,
                 bloom_time=bloom_time,
+                title=title,
+                description=description,
+                difficulty=difficulty,
+                scientific_rationale=scientific_rationale,
                 parameters_json=parameters_json,
                 predicted_score=predicted_score,
                 uncertainty_score=uncertainty_score,
@@ -101,7 +109,13 @@ class ExperimentTracker:
             if limit:
                 query = query.limit(limit)
 
-            return query.all()
+            experiments = query.all()
+
+            # Detach objects from session to avoid DetachedInstanceError
+            for exp in experiments:
+                session.expunge(exp)
+
+            return experiments
 
     def update_experiment(
         self, experiment_id: int, user_id: str, **updates
@@ -276,7 +290,13 @@ class ExperimentTracker:
             if limit:
                 query = query.limit(limit)
 
-            return query.all()
+            interactions = query.all()
+
+            # Detach objects from session to avoid DetachedInstanceError
+            for interaction in interactions:
+                session.expunge(interaction)
+
+            return interactions
 
     def _log_interaction(
         self,
@@ -376,7 +396,13 @@ class ExperimentTracker:
             if limit:
                 query = query.limit(limit)
 
-            return query.all()
+            results = query.all()
+
+            # Detach objects from session to avoid DetachedInstanceError
+            for result in results:
+                session.expunge(result)
+
+            return results
 
     def update_experiment_result(
         self, result_id: int, user_id: str, **updates

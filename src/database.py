@@ -2,9 +2,11 @@
 Database models and configuration for experiment tracking system.
 
 This module provides SQLAlchemy models for tracking coffee brewing experiments,
-user interactions, and results. Uses PostgreSQL for efficient data storage.
+user interactions, and results. Uses SQLite for efficient data storage.
 """
 
+# Use Text for JSON data to ensure SQLite compatibility
+import json as json_module
 from datetime import datetime
 from typing import Any, Dict, Optional
 
@@ -18,11 +20,35 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    TypeDecorator,
     create_engine,
 )
-from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, relationship, sessionmaker
+
+
+class JSONType(TypeDecorator):
+    """JSON type that works with SQLite."""
+
+    impl = Text
+    cache_ok = True
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return json_module.dumps(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            try:
+                return json_module.loads(value)
+            except (ValueError, TypeError):
+                return value
+        return value
+
+
+# Use our custom JSON type for SQLite compatibility
+JSON = JSONType
 
 Base = declarative_base()
 
@@ -46,6 +72,10 @@ class Experiment(Base):
     bloom_time = Column(Integer, nullable=True)  # seconds (for pour over)
 
     # Experiment metadata
+    title = Column(String(255), nullable=True)  # Experiment title
+    description = Column(Text, nullable=True)  # Experiment description
+    difficulty = Column(String(20), nullable=True)  # Easy, Medium, Hard
+    scientific_rationale = Column(Text, nullable=True)  # Scientific explanation
     parameters_json = Column(JSON, nullable=True)  # Full parameter object
     predicted_score = Column(Float, nullable=True)
     uncertainty_score = Column(Float, nullable=True)
@@ -86,6 +116,10 @@ class Experiment(Base):
             "brew_time": self.brew_time,
             "pressure": self.pressure,
             "bloom_time": self.bloom_time,
+            "title": self.title,
+            "description": self.description,
+            "difficulty": self.difficulty,
+            "scientific_rationale": self.scientific_rationale,
             "parameters_json": self.parameters_json,
             "predicted_score": self.predicted_score,
             "uncertainty_score": self.uncertainty_score,
@@ -238,7 +272,7 @@ class DatabaseSession:
 
 
 # Default database configuration
-DEFAULT_DATABASE_URL = "postgresql://localhost:5432/coffeerl"
+DEFAULT_DATABASE_URL = "sqlite:///cofferl.db"
 
 
 def get_database_manager(database_url: Optional[str] = None) -> DatabaseManager:

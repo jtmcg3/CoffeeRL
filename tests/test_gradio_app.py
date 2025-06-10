@@ -131,69 +131,84 @@ class TestModelOutputParsing:
     def test_format_output_complete_data(self):
         """Test formatting output with complete data."""
         output_json = {
-            "grind_change": "Go one step finer",
-            "expected_time": "2:45",
-            "extraction": "Under-extracted",
-            "confidence": 0.85,
+            "confidence": 0.8,
+            "recommendations": {
+                "grind_adjustment": "finer",
+                "time_adjustment": "2:30-3:00",
+                "extraction_notes": "under-extracted",
+            },
             "reasoning": "Sour taste indicates under-extraction. Try grinding finer.",
         }
 
         result = format_output(output_json)
 
-        assert "### Recommendation" in result
-        assert "**Grind Adjustment:** Go one step finer" in result
-        assert "**Expected Brew Time:** 2:45" in result
-        assert "**Extraction Assessment:** Under-extracted" in result
-        assert "**Confidence:** 0.85" in result
-        assert "### Reasoning" in result
+        # Check for new format elements
+        assert "🟢 **High Confidence**" in result
+        assert "### 🎯 Recommendations" in result
+        assert "⚙️ **Grind:** finer" in result
+        assert "⏱️ **Time:** 2:30-3:00" in result
+        assert "🔬 **Extraction:** under-extracted" in result
+        assert "### 🧠 AI Reasoning" in result
         assert "Sour taste indicates under-extraction" in result
 
     def test_format_output_missing_data(self):
         """Test formatting output with missing data."""
-        output_json = {"grind_change": "finer", "confidence": 0.7}
+        output_json = {
+            "confidence": 0.6,
+            "recommendations": {"grind_adjustment": "finer"},
+        }
 
         result = format_output(output_json)
 
-        assert "**Grind Adjustment:** finer" in result
-        assert "**Expected Brew Time:** unknown" in result
-        assert "**Extraction Assessment:** unknown" in result
-        assert "**Confidence:** 0.70" in result
+        # Check for new format elements
+        assert "🟡 **Medium Confidence**" in result
+        assert "⚙️ **Grind:** finer" in result
+        assert "### 🧠 AI Reasoning" in result
+        assert "*No reasoning provided*" in result
 
     def test_format_output_none_input(self):
         """Test formatting output with None input."""
         result = format_output(None)
-
-        assert result == "Error: Could not parse model output"
+        assert (
+            result == "❌ **Error:** Unable to process your request. Please try again."
+        )
 
 
 class TestCoffeePrediction:
     """Test coffee prediction functionality."""
 
     def test_predict_coffee_empty_input(self):
-        """Test prediction with empty input."""
+        """Test predict_coffee with empty input."""
         result = predict_coffee("")
 
-        assert result == "Please enter your brewing parameters and taste notes."
+        assert (
+            result
+            == "📝 **Input Required:** Please enter your brewing parameters and taste notes to get personalized recommendations."
+        )
 
     def test_predict_coffee_whitespace_input(self):
-        """Test prediction with whitespace-only input."""
-        result = predict_coffee("   \n\t   ")
+        """Test predict_coffee with whitespace-only input."""
+        result = predict_coffee("   ")
 
-        assert result == "Please enter your brewing parameters and taste notes."
+        assert (
+            result
+            == "📝 **Input Required:** Please enter your brewing parameters and taste notes to get personalized recommendations."
+        )
 
     @patch("src.gradio_app.load_model")
     def test_predict_coffee_model_not_loaded(self, mock_load_model):
-        """Test prediction when model fails to load."""
-        mock_load_model.return_value = (None, None, {"device": "cpu"}, "QLora")
+        """Test predict_coffee when model is not loaded."""
+        mock_load_model.return_value = (None, None, {}, "")
 
-        result = predict_coffee("V60, 15g coffee, 250g water, medium grind, sour taste")
-
-        # The function should return a demo response when model is not loaded
-        assert (
-            "Demo Response (Model not loaded)" in result or "Recommendation" in result
+        result = predict_coffee(
+            "V60, 20g coffee, 300g water, medium grind, 3:00 brew time, tastes sour"
         )
-        assert "Grind Adjustment" in result
-        assert "Expected Brew Time" in result
+
+        # Check for new demo format elements
+        assert "🎭 Demo Response" in result
+        assert "⚙️ **Grind:** Try going one step finer" in result
+        assert "⏱️ **Time:** Aim for 2:30-3:00 total brew time" in result
+        assert "🔬 **Extraction:** Your coffee appears under-extracted" in result
 
     @patch("src.gradio_app.load_model")
     def test_predict_coffee_with_mock_model(self, mock_load_model):
